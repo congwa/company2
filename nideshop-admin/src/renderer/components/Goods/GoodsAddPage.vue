@@ -1,0 +1,445 @@
+<template>
+  <div class="content-page">
+    <div class="content-nav">
+      <el-breadcrumb class="breadcrumb" separator="/">
+        <el-breadcrumb-item :to="{ name: 'dashboard' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{infoForm.id ? '编辑商品' : '添加商品'}}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="operation-nav">
+        <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
+      </div>
+    </div>
+    <div class="content-main">
+      <div class="form-table-box">
+
+        <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
+
+
+          <el-form-item label="所属分类" prop="category_id">
+            <el-select :options="options" placeholder="请选择分类" v-model="infoForm.category_id">
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="商品名称" prop="name">
+            <el-input v-model="infoForm.name"></el-input>
+          </el-form-item>
+
+          <el-form-item label="商品关键词(用于搜寻用)" prop="keywords">
+            <el-input v-model="infoForm.keywords"></el-input>
+          </el-form-item>
+
+  
+
+          <el-form-item label="商品简介" prop="goods_brief">
+            <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
+            <div class="form-tip"></div>
+          </el-form-item>
+
+
+          <el-form-item label="商品详情" prop="goods_desc">
+            <quill-editor ref="myTextEditor"
+                v-model="infoForm.goods_desc"
+                :config="editorOption"
+                @blur="onEditorBlur($event)"
+                @change="onEditorChange($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)">
+            </quill-editor>
+          </el-form-item>
+
+          <el-form-item label="商品主图" prop="primary_pic_url">
+            <el-upload
+              class="image-uploader"
+              :action="api.rootUrl + 'upload/brandPic'"
+              :show-file-list="false"
+              :on-success="handlePicUrlSuccess" 
+              :headers="uploaderHeader">
+              <img v-if="infoForm.primary_pic_url " :src="infoForm.primary_pic_url " class="image-show">
+              <i v-else class="el-icon-plus image-uploader-icon"></i>
+            </el-upload>
+            <div class="form-tip">图片尺寸：750*420</div>
+          </el-form-item>
+
+
+          <el-form-item label="商品列表图" prop="list_pic_url">
+            <el-upload 
+              class="image-uploader" name="brand_pic"
+              :action="api.rootUrl+ '/upload/brandPic'" 
+              :show-file-list="false"
+              :on-success="handleUploadImageSuccess" 
+              :headers="uploaderHeader">
+              <img v-if="infoForm.list_pic_url" :src="infoForm.list_pic_url" class="image-show">
+              <i v-else class="el-icon-plus image-uploader-icon"></i>
+            </el-upload>
+            <div class="form-tip">图片尺寸：750*420</div>
+          </el-form-item>
+          
+
+        
+
+          <el-form-item label="商品视频" prop="list_video_url" >
+            <el-upload class="" name="upload_video" drag accept=".flv"
+                       :action="api.rootUrl + '/upload/uploadVideo'"
+                       :before-upload="beforeUploadVideo"
+                       :on-success="handleUploadVideoSuccess" :headers="uploaderHeader">
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <video  v-if="infoForm.list_video_url" :src="infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
+              <i v-else class="el-icon-plus image-uploader-icon"></i>
+            </el-upload>
+            <div class="form-tip">支持格式：flv</div>
+          </el-form-item>
+
+          <!-- <el-form-item label="规格/库存" prop="simple_d"> </el-form-item> -->
+
+          <el-form-item label="是否是热门产品">
+              <el-switch v-model="infoForm.is_hot"></el-switch>
+          </el-form-item>
+
+
+          <el-form-item label="是否是首发产品">
+            <el-switch v-model="infoForm.is_new"> </el-switch>
+          </el-form-item>
+
+          <el-form-item label="是否下架(不显示)">
+              <el-switch v-model="infoForm.is_delete"> </el-switch>
+              <div>商品默认为显示的</div>
+          </el-form-item>
+
+  
+          <el-form-item label="排序">
+            <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmitInfo">确定保存</el-button>
+            <el-button @click="goBackPage">取消</el-button>
+          </el-form-item>
+
+        </el-form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import api from '@/config/api';
+  export default {
+    data() {
+      return {
+        api:api,
+        infoForm: {
+          id: 0,              // 商品id
+          name: "",           // 商品名字
+          category_id:'', // 商品分类选项
+          keywords: '',   // 商品关键词 用于搜寻
+         
+          goods_brief: '',   // 商品简介
+
+          goods_desc: '',  // 商品详情
+
+          primary_pic_url: '',  // 商品主图 1个
+          list_pic_url: '',   // 商品列表图 1个
+          // promotion_tag: '',  // 推荐类型
+
+          sort_order: 100,   //排序
+          // is_show: true,     //是否显示
+
+          // floor_price: 0,
+          // app_list_pic_url: '', 
+          is_new: false,    // 是否新的
+          is_hot: false,    // 是否热门产品
+          is_delete: false, //是否立即展示
+          // new_pic_url: "",
+          // new_sort_order: 10,
+          list_video_url: '',   // 视频为非必填选项
+        },
+        editorOption: {
+          // something config
+        },
+        options:[],
+        
+      
+        uploaderHeader: {
+          'X-Nideshop-Token': localStorage.getItem('token') || '',
+        },
+        
+        infoRules: {
+          name: [
+            { required: true, message: '请输入名称', trigger: 'blur' }, 
+
+          ],
+
+
+          keywords: [
+            { required: true, message: '请输入关键词', trigger: 'blur' },
+          ],
+
+
+          goods_desc: [
+            { required: true, message: '请输入详情', trigger: 'blur' },
+          ],
+
+          primary_pic_url: [
+            { required: true, message: '请上传商品主图', trigger: 'blur' },
+          ],
+
+          // sort_order: [
+          //   { required: true, message: '请输入排序', trigger: 'blur' },
+          // ],
+
+          goods_brief: [
+            { required: true, message: '请输入简介', trigger: 'blur' },
+          ],
+          list_pic_url: [
+            { required: true, message: '请选择商品列表图片', trigger: 'blur' },
+          ],
+          category_id: [
+             {type: 'number', required: true, message: '请选择商品分类', trigger: 'blur' },
+          ]
+        },
+      }
+    },
+
+    methods: {
+      goBackPage() {
+        this.$router.go(-1);
+      },
+      //id  category_id goods_sn  name  brand_id  goods_number  keywords  goods_brief   goods_desc  is_on_sale  add_time  sort_order  is_delete attribute_category  counter_price extra_price is_new  goods_unit  primary_pic_url list_pic_url  retail_price  sell_volume primary_product_id  unit_price  promotion_desc  promotion_tag app_exclusive_price is_app_exclusive  is_limited  is_hot  desc_video_url
+      //
+      //
+      //
+      //现阶段可用参数  category_id  name  keywords  goods_brief  goods_desc sort_order  is_new primary_pic_url（商品主图） list_pic_url（商品列表图） is_hot  desc_video_url
+      onSubmitInfo() {
+        this.$refs['infoForm'].validate((valid) => {
+          if (valid) {
+            this.axios.post('goods/store', this.infoForm).then((response) => {
+              if (response.data.errno === 0) {
+                this.$message({
+                  type: 'success',
+                  message: '保存成功'
+                });
+                this.$router.go(-1)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '保存失败'
+                })
+              }
+            })
+          } else {
+            return false;
+          }
+        });
+      },
+
+      // handleChange(value){
+      //   console.log(value);
+      //   this.infoForm.category_id = value;
+      // },
+
+      /**
+       * 商品列表图上传
+       * @param  {[type]} res  [description]
+       * @param  {[type]} file [description]
+       * @return {[type]}      [description]
+       */
+      handleUploadImageSuccess(res, file) {
+        if (res.errno === 0) {
+          // switch (res.data.name) {
+          //   //商品图片
+          //   case 'brand_pic':
+              
+          //     this.$set('infoForm.list_pic_url', res.data.fileUrl);
+          //     break;
+          //   case 'brand_new_pic':
+          //     this.$set('infoForm.new_pic_url', res.data.fileUrl);
+          //     break;
+          // }
+          this.infoForm.list_pic_url = res.data.fileUrl;
+        }
+      },
+
+      /**
+       * 商品主图上传成功
+       * @param  {[type]} res  [description]
+       * @param  {[type]} file [description]
+       * @return {[type]}      [description]
+       */
+      handlePicUrlSuccess(res,file){
+        if(res.errno === 0 ){
+          this.infoForm.primary_pic_url = res.data.fileUrl;
+        }
+      },
+
+      /**
+       * 视频上传检测
+       * @param  {[type]} file [description]
+       * @return {[type]}      [description]
+       */
+      beforeUploadVideo(file) {
+          if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb','video/x-flv'].indexOf(file.type) == -1) {
+              this.$message.error('请上传正确的视频格式');
+              return false;
+          }
+      },
+      /**
+       * 视频上传成功
+       * @param  {[type]} res  [description]
+       * @param  {[type]} file [description]
+       * @return {[type]}      [description]
+       */
+      handleUploadVideoSuccess(res, file) {
+        if(res.errno === 0 ) {
+          this.infoForm.list_video_url = res.data.fileUrl;
+        }
+        console.log('视频上传成功',file);
+      },
+
+      onEditorBlur(editor) {
+      console.log('editor blur!', editor)
+      },
+      onEditorFocus(editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorReady(editor) {
+        console.log('editor ready!', editor)
+      },
+      onEditorChange({ editor, html, text }) {
+        // console.log('editor change!', editor, html, text)
+        this.infoForm.goods_desc = html;
+        console.log('商品详情',html);
+      },
+
+      /**
+       * 获取详情
+       * @return {[type]} [description]
+       */
+      getInfo() {
+        if (this.infoForm.id <= 0) {
+          return false
+        }
+
+        //加载商品详情
+        let that = this
+        this.axios.get('goods/info', {
+          params: {
+            id: that.infoForm.id
+          }
+        }).then((response) => {
+          console.log('商品详情',response);
+          let resInfo = response.data.data;
+          resInfo.is_new = resInfo.is_new ? true : false;
+          resInfo.is_show = resInfo.is_show ? true : false;
+          resInfo.is_delete = resInfo.is_delete? true : false;
+          that.infoForm = resInfo;
+        })
+      },
+      getCatalog(){
+        let that = this;
+        this.axios.get('category/second')
+        .then((response) => {
+          console.log('分类信息',response);
+          this.options = response.data.data;
+        })
+      }
+
+    },
+    components: {},
+    mounted() {
+      this.infoForm.id = this.$route.query.id || 0;
+      console.log('id',this.infoForm.id);
+      this.getInfo();
+      this.getCatalog();
+      console.log(api)
+    }
+  }
+
+</script>
+
+<style>
+ .el-form-item{
+    overflow: visible;
+  }
+  .image-uploader{
+   
+  }
+  .image-uploader .el-upload {
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-uploader .el-upload:hover {
+    border-color: #20a0ff;
+  }
+
+  .image-uploader .image-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 187px;
+    height: 105px;
+    line-height: 105px;
+    text-align: center;
+  }
+
+  .image-uploader .image-show {
+    width: 187px;
+    height: 105px;
+    display: block;
+  }
+
+  .image-uploader.new-image-uploader {
+    font-size: 28px;
+    color: #8c939d;
+    width: 165px;
+    height: 105px;
+    line-height: 105px;
+    text-align: center;
+  }
+
+  .image-uploader.new-image-uploader .image-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 165px;
+    height: 105px;
+    line-height: 105px;
+    text-align: center;
+  }
+
+  .image-uploader.new-image-uploader .image-show {
+    width: 165px;
+    height: 105px;
+    display: block;
+  }
+    .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>
