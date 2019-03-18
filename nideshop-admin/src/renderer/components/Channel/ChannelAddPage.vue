@@ -29,7 +29,7 @@
                         <el-upload class="image-uploader" name="icon_url"
                                    :action="api.rootUrl+ 'upload/channelThumb'" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
-                            <img v-if="infoForm.icon_url" :src="api.imgUrl + infoForm.icon_url" class="image-show">
+                            <img v-if="infoForm.icon_url" :src="infoForm.icon_url" class="image-show">
                             <i v-else class="el-icon-plus image-uploader-icon"></i>
                         </el-upload>
                         <div class="form-tip">图片尺寸：24*24</div>

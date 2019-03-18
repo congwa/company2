@@ -2,6 +2,7 @@ const Base = require('./base.js');
 const fs = require('fs');
 const fss = require('fs-extra');
 
+
 module.exports = class extends Base {
   async brandPicAction() {
     const brandFile = this.file('brand_pic');
@@ -17,7 +18,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'brand_pic',
-      fileUrl:  filename
+      fileUrl: think.config('upimg_url') + filename
     });
   }
 
@@ -36,7 +37,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'brand_new_pic',
-      fileUrl:  filename
+      fileUrl: think.config('upimg_url') + filename
     });
   }
 
@@ -58,7 +59,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'wap_banner_url',
-      fileUrl: filename
+      fileUrl:think.config('upimg_url') + filename
     });
   }
 
@@ -77,7 +78,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'scene_pic_url',
-      fileUrl: filename
+      fileUrl:think.config('upimg_url') + filename
     });
   }
 
@@ -96,7 +97,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'image_url',
-      fileUrl:  filename
+      fileUrl:  think.config('upimg_url') +filename
     });
   }
 
@@ -115,7 +116,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'icon_url',
-      fileUrl: filename
+      fileUrl: think.config('upimg_url') +filename
     });
   }
 
@@ -133,7 +134,7 @@ module.exports = class extends Base {
     is.pipe(os);
     return that.success({
       name: 'upload_video',
-      fileUrl:  filename
+      fileUrl:  think.config('upimg_url') +filename
     });
   }
 };

@@ -1,6 +1,7 @@
 // default config
 module.exports = {
   default_module: 'api',
+  upimg_url: 'http://139.199.103.116:8002', //图片上传到的服务器地址
   weixin: {
     appid: 'wxb02b4a9c72aacbf3', // 小程序 appid
     secret: 'e74ce0e56289dd95341f52dfdc9e1b0c', // 小程序密钥

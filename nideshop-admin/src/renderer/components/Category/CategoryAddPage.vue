@@ -29,7 +29,7 @@
                         <el-upload class="image-uploader" name="wap_banner_pic"
                                    action="api.rootUrl+ '/upload/categoryWapBannerPic'" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
-                            <img v-if="infoForm.wap_banner_url" :src="api.imgUrl + infoForm.wap_banner_url" class="image-show">
+                            <img v-if="infoForm.wap_banner_url" :src="infoForm.wap_banner_url" class="image-show">
                             <i v-else class="el-icon-plus image-uploader-icon"></i>
                         </el-upload>
                         <div class="form-tip">图片尺寸：顶级分类为750*246，二级分类为250*250</div>
