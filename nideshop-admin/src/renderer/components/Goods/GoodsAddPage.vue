@@ -90,7 +90,7 @@
                        :before-upload="beforeUploadVideo"
                        :on-success="handleUploadVideoSuccess" :headers="uploaderHeader">
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-              <video  v-if="infoForm.list_video_url" :src="api.rootUrl + infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
+              <video  v-if="infoForm.list_video_url" :src="api.imgUrl + infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
               <i v-else class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
             <div class="form-tip">支持格式：flv</div>

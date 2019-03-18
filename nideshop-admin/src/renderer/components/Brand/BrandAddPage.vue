@@ -36,7 +36,7 @@
                         <el-upload class="image-uploader new-image-uploader" name="brand_new_pic"
                                    :action="api.rootUrl+'/upload/brandNewPic'" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
-                            <img v-if="infoForm.new_pic_url" :src="api.rootUrl + infoForm.new_pic_url" class="image-show">
+                            <img v-if="infoForm.new_pic_url" :src="api.imgUrl + infoForm.new_pic_url" class="image-show">
                             <i v-else class="el-icon-plus image-uploader-icon"></i>
                         </el-upload>
                         <div class="form-tip">图片尺寸：375*252</div>

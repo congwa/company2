@@ -24,12 +24,12 @@
                           </el-option>
                         </el-select>
                     </el-form-item>
-    
+
                     <el-form-item label="展示缩略图" prop="icon_url">
                         <el-upload class="image-uploader" name="icon_url"
                                    :action="api.rootUrl+ 'upload/channelThumb'" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
-                            <img v-if="infoForm.icon_url" :src="infoForm.icon_url" class="image-show">
+                            <img v-if="infoForm.icon_url" :src="api.imgUrl + infoForm.icon_url" class="image-show">
                             <i v-else class="el-icon-plus image-uploader-icon"></i>
                         </el-upload>
                         <div class="form-tip">图片尺寸：24*24</div>
@@ -127,7 +127,7 @@
                     that.infoForm = resInfo;
                     let strs = resInfo.url.split("id=");
                     that.infoForm.category_id = +strs[1];
-                    console.log('当前类型id',strs[1]); 
+                    console.log('当前类型id',strs[1]);
                 })
             },
             getCatalog(){
@@ -148,7 +148,7 @@
                             throw new Error("ending"); //报错，就跳出循环
                         }
                     })
- 
+
                 }catch(e) {
                     // statements
                     console.log(e);
