@@ -10,7 +10,7 @@
         </div>
         <div class="content-main">
             <div class="form-table-box" v-loading="pageLoading" element-loading-text="拼命加载中">
-               
+
             </div>
         </div>
     </div>
@@ -61,5 +61,5 @@
 </script>
 
 <style>
-   
+
 </style>

@@ -35,7 +35,7 @@
             <el-input v-model="infoForm.keywords"></el-input>
           </el-form-item>
 
-  
+
 
           <el-form-item label="商品简介" prop="goods_brief">
             <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
@@ -59,7 +59,7 @@
               class="image-uploader"
               :action="api.rootUrl + 'upload/brandPic'"
               :show-file-list="false"
-              :on-success="handlePicUrlSuccess" 
+              :on-success="handlePicUrlSuccess"
               :headers="uploaderHeader">
               <img v-if="infoForm.primary_pic_url " :src="infoForm.primary_pic_url " class="image-show">
               <i v-else class="el-icon-plus image-uploader-icon"></i>
@@ -69,20 +69,20 @@
 
 
           <el-form-item label="商品列表图" prop="list_pic_url">
-            <el-upload 
+            <el-upload
               class="image-uploader" name="brand_pic"
-              :action="api.rootUrl+ '/upload/brandPic'" 
+              :action="api.rootUrl+ '/upload/brandPic'"
               :show-file-list="false"
-              :on-success="handleUploadImageSuccess" 
+              :on-success="handleUploadImageSuccess"
               :headers="uploaderHeader">
               <img v-if="infoForm.list_pic_url" :src="infoForm.list_pic_url" class="image-show">
               <i v-else class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
             <div class="form-tip">图片尺寸：750*420</div>
           </el-form-item>
-          
 
-        
+
+
 
           <el-form-item label="商品视频" prop="list_video_url" >
             <el-upload class="" name="upload_video" drag accept=".flv"
@@ -90,7 +90,7 @@
                        :before-upload="beforeUploadVideo"
                        :on-success="handleUploadVideoSuccess" :headers="uploaderHeader">
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-              <video  v-if="infoForm.list_video_url" :src="infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
+              <video  v-if="infoForm.list_video_url" :src="api.rootUrl + infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
               <i v-else class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
             <div class="form-tip">支持格式：flv</div>
@@ -112,7 +112,7 @@
               <div>商品默认为显示的</div>
           </el-form-item>
 
-  
+
           <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item>
@@ -139,7 +139,7 @@
           name: "",           // 商品名字
           category_id:'', // 商品分类选项
           keywords: '',   // 商品关键词 用于搜寻
-         
+
           goods_brief: '',   // 商品简介
 
           goods_desc: '',  // 商品详情
@@ -152,7 +152,7 @@
           // is_show: true,     //是否显示
 
           // floor_price: 0,
-          // app_list_pic_url: '', 
+          // app_list_pic_url: '',
           is_new: false,    // 是否新的
           is_hot: false,    // 是否热门产品
           is_delete: false, //是否立即展示
@@ -164,15 +164,15 @@
           // something config
         },
         options:[],
-        
-      
+
+
         uploaderHeader: {
           'X-Nideshop-Token': localStorage.getItem('token') || '',
         },
-        
+
         infoRules: {
           name: [
-            { required: true, message: '请输入名称', trigger: 'blur' }, 
+            { required: true, message: '请输入名称', trigger: 'blur' },
 
           ],
 
@@ -255,7 +255,7 @@
           // switch (res.data.name) {
           //   //商品图片
           //   case 'brand_pic':
-              
+
           //     this.$set('infoForm.list_pic_url', res.data.fileUrl);
           //     break;
           //   case 'brand_new_pic':
@@ -368,7 +368,7 @@
     overflow: visible;
   }
   .image-uploader{
-   
+
   }
   .image-uploader .el-upload {
     border: 1px solid #d9d9d9;

@@ -17,7 +17,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'brand_pic',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl:  filename
     });
   }
 
@@ -36,7 +36,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'brand_new_pic',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl:  filename
     });
   }
 
@@ -58,7 +58,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'wap_banner_url',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl: filename
     });
   }
 
@@ -77,7 +77,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'scene_pic_url',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl: filename
     });
   }
 
@@ -96,7 +96,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'image_url',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl:  filename
     });
   }
 
@@ -115,7 +115,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'icon_url',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl: filename
     });
   }
 
@@ -133,7 +133,7 @@ module.exports = class extends Base {
     is.pipe(os);
     return that.success({
       name: 'upload_video',
-      fileUrl: 'http://127.0.0.1:8360' + filename
+      fileUrl:  filename
     });
   }
 };

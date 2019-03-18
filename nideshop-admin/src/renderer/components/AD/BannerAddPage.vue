@@ -24,7 +24,7 @@
                         <el-upload class="image-uploader" name="image_url"
                                    :action="api.rootUrl + 'upload/bannerThumb'" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
-                            <img v-if="infoForm.image_url" :src="infoForm.image_url" class="image-show">
+                            <img v-if="infoForm.image_url" :src="api.rootUrl + infoForm.image_url" class="image-show">
                             <i v-else class="el-icon-plus image-uploader-icon"></i>
                         </el-upload>
                         <div class="form-tip">图片尺寸：750*200</div>
