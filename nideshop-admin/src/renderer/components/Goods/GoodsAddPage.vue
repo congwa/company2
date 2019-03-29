@@ -187,7 +187,7 @@
           ],
 
           primary_pic_url: [
-            // { required: true, message: '请上传商品主图', trigger: 'blur' },
+             { required: true, message: '请上传商品主图', trigger: 'blur' },
           ],
 
           // sort_order: [
@@ -198,7 +198,7 @@
             { required: true, message: '请输入简介', trigger: 'blur' },
           ],
           list_pic_url: [
-            { required: true, message: '请选择商品列表图片', trigger: 'blur' },
+            // { required: true, message: '请选择商品列表图片', trigger: 'blur' },
           ],
           category_id: [
              {type: 'number', required: true, message: '请选择商品分类', trigger: 'blur' },
