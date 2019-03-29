@@ -24,8 +24,23 @@
                 </el-menu-item>
                  <el-menu-item index="/dashboard/operate/channel">
                     <i class="fa fa-circle"></i>
-                    <span>商品首页分类</span>
+                    <span>商品首页展示分类</span>
                 </el-menu-item>
+          
+
+                 <el-submenu index="attribute">
+                   <template slot="title">
+                       <span>商品属性</span>
+                   </template>
+                   <el-menu-item index="/dashboard/attribute_category">
+                      <i class="fa fa-circle"></i>
+                      <span>属性分类首页</span>
+                   </el-menu-item>
+                   <el-menu-item index="/dashboard/attribute">
+                      <i class="fa fa-circle"></i>
+                      <span>属性详情首页</span>
+                   </el-menu-item>
+                 </el-submenu>
               <!--   <el-menu-item index="/dashboard/brand">
                     <i class="fa fa-circle"></i>
                     <span>品牌管理</span>

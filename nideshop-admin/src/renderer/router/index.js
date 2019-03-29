@@ -114,6 +114,29 @@ export default new Router({
                     name: 'user_add',
                     component: require('@/components/User/UserAddPage')
                 },
+
+                {
+                    path: 'attribute/add',
+                    name: 'attribute_add',
+                    component: require('@/components/Attribute/AttributeAddPage')
+                },
+                {
+                    path: 'attribute',
+                    name: 'attribute',
+                    component: require('@/components/Attribute/AttributePage')
+                },
+
+                {
+                    path: 'attribute_category/add',
+                    name: 'attribute_category_add',
+                    component: require('@/components/Attribute/Category/Attribute_CategoryAddPage')
+                },
+                {
+                    path: 'attribute_category',
+                    name: 'attribute_category',
+                    component: require('@/components/Attribute/Category/Attribute_CategoryPage')
+                },
+
             ]
         },
         {

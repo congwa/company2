@@ -32,6 +32,7 @@ module.exports = class extends Base {
     const values = this.post();
     const id = this.post('id');
 
+    //添加goods表
     const model = this.model('goods');
     values.is_on_sale = values.is_on_sale ? 1 : 0;
     values.is_new = values.is_new ? 1 : 0;
@@ -43,8 +44,27 @@ module.exports = class extends Base {
       delete values.id;
       await model.add(values);
     }
+    //添加goods_gallery
+    const gallery_list = values['gallery'];
+    await this.model('goods_gallery').where({id:id}).delete();
+    const list = gallery_list.map((url ,index)=> {
+      return {img_url:url,goods_id:id,img_desc:'',sort_order:index}
+    })
+    await this.model('goods_gallery').addMany(list);
+
+    //添加商品属性
+    const goods_attribute = values['attribute'];
+    await this.model('goods_attribute').where({id:id}).delete();
+    const a_list = goods_attribute.map(item => {
+      item.goods_id = id;
+      return item;
+    })
+    await this.model('goods_attribute').addMany(a_list);
+
+
     return this.success(values);
   }
+
 
   async destoryAction() {
     const id = this.post('id');
