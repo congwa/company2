@@ -56,8 +56,8 @@
 
           <el-form-item label="商品主图" prop="primary_pic_url">
             <el-upload
-              class="image-uploader"
-              :action="api.rootUrl + 'upload/brandPic'"
+              class="image-uploader" name="brand_pic"
+              :action="api.rootUrl + '/upload/brandPic'"
               :show-file-list="false"
               :on-success="handlePicUrlSuccess"
               :headers="uploaderHeader">
