@@ -187,7 +187,7 @@
           ],
 
           primary_pic_url: [
-            { required: true, message: '请上传商品主图', trigger: 'blur' },
+            // { required: true, message: '请上传商品主图', trigger: 'blur' },
           ],
 
           // sort_order: [
