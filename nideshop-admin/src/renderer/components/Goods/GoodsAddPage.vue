@@ -81,7 +81,36 @@
             <div class="form-tip">图片尺寸：750*420</div>
           </el-form-item>
 
+          <el-form-item label="商品详情列表图" prop="gallery">
+            <el-upload
+              :action="api.rootUrl+ '/upload/brandPic'"
+              name="brand_pic"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :fileList="fileList"
+              :headers="uploaderHeader"
+              :on-success="handleCardPreviewSuccess">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </el-form-item>
 
+          <el-form-item label="商品详情商品属性" prop="attribute">
+            <div class="attributeList" v-for="(item,index) in attributeList">
+              <el-cascader
+                v-model="item['attribute_id']"
+                :options="attributeDesc"
+                :show-all-levels="false"
+                @change="attributeSelect($event,index)">
+              </el-cascader>
+              <el-input v-model="item['value']" placeholder="请输入此属性内容"  @change="attributeChange($event,index)"  class="input-with-select">
+              </el-input>
+            </div>
+            <el-button @click="addAttribute">添加一个新的属性</el-button>
+          </el-form-item>
 
 
           <el-form-item label="商品视频" prop="list_video_url" >
@@ -134,6 +163,13 @@
     data() {
       return {
         api:api,
+        dialogImageUrl: '',
+        dialogVisible: false,
+        fileList:[],
+
+        attributeList:[],
+        attributeDesc:[],
+
         infoForm: {
           id: 0,              // 商品id
           name: "",           // 商品名字
@@ -150,7 +186,7 @@
 
           sort_order: 100,   //排序
           // is_show: true,     //是否显示
-
+          gallery:[],
           // floor_price: 0,
           // app_list_pic_url: '',
           is_new: false,    // 是否新的
@@ -159,6 +195,7 @@
           // new_pic_url: "",
           // new_sort_order: 10,
           list_video_url: '',   // 视频为非必填选项
+          attribute:[]
         },
         editorOption: {
           // something config
@@ -174,6 +211,10 @@
           name: [
             { required: true, message: '请输入名称', trigger: 'blur' },
 
+          ],
+
+          gallery: [
+            { required: true, type:'array', message: '请上传展示页列表图', trigger: 'blur' },
           ],
 
 
@@ -208,6 +249,44 @@
     },
 
     methods: {
+      addAttribute() {
+        this.attributeList.push({attribute_id:['',''],value:''});
+      },
+      attributeChange(value,index) {
+        console.log(value,index);
+        this.infoForm.attribute[index]? '':(this.infoForm.attribute[index]={attribute_id:'',value:''})
+        this.infoForm.attribute[index]['value'] = value;
+        this.attributeList[index]['value'] = value;
+      },
+      attributeSelect(value,index) {
+        console.log(value,index);
+        if(index == undefined || value === ''){
+          console.log('fail');
+          return;
+        }
+        this.infoForm.attribute[index]? '':(this.infoForm.attribute[index]={attribute_id:'',value:''})
+        this.infoForm.attribute[index]['attribute_id'] = value[1];
+        this.attributeList[index]['attribute_id'] = value;
+      },
+      handleRemove(file, fileList) {
+         console.log('-------',this.infoForm.gallery);
+         let url = file.url || file.response.data.fileUrl ;
+         let tag = this.infoForm.gallery.indexOf(url);
+         if(tag != -1){
+           this.infoForm.gallery.splice(tag,1);
+         }
+         console.log('删除',this.infoForm.gallery);
+      },
+      handlePictureCardPreview(file) {
+         console.log(this.dialogImageUrl);
+         this.dialogImageUrl = file.url;
+         this.dialogVisible = true;
+      },
+      handleCardPreviewSuccess(res , file){
+        console.log('-------',this.infoForm);
+        this.infoForm.gallery.push(res.data.fileUrl);
+
+      },
       goBackPage() {
         this.$router.go(-1);
       },
@@ -217,6 +296,7 @@
       //
       //现阶段可用参数  category_id  name  keywords  goods_brief  goods_desc sort_order  is_new primary_pic_url（商品主图） list_pic_url（商品列表图） is_hot  desc_video_url
       onSubmitInfo() {
+        console.log(this.infoForm.gallery);
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
             this.axios.post('goods/store', this.infoForm).then((response) => {
@@ -265,6 +345,7 @@
           this.infoForm.list_pic_url = res.data.fileUrl;
         }
       },
+
 
       /**
        * 商品主图上传成功
@@ -348,8 +429,59 @@
           console.log('分类信息',response);
           this.options = response.data.data;
         })
-      }
+      },
+      getAttributeDesc() {
 
+
+        //加载商品详情
+        let that = this;
+        this.axios.get('attribute/indexlist').then((response) => {
+          console.log('商品详情',response);
+          let resInfo = response.data.data;
+          that.attributeDesc = resInfo;
+        })
+      },
+
+      getGoodsAttribute() {
+        let that = this;
+        this.axios.post('goods/infogoods',{id:this.infoForm.id}).then((response) => {
+          console.log('商品属性',response);
+          let resInfo = response.data.data;
+          this.infoForm.attribute = resInfo;
+
+          let res =[];
+          resInfo.map(item => {
+            let a = [];
+            a.push(item.attribute_category_id);
+            a.push(item.attribute_id);
+            let b ={};
+            b.attribute_id = a;
+            b.value = item.value;
+            res.push(b);
+          })
+          this.attributeList = res;
+        })
+      },
+
+      getGalleryList() {
+        this.axios.post('goods/galleryinfo',{id:this.infoForm.id}).then((response) => {
+          console.log('轮播图属性',response);
+          let resInfo = response.data.data;
+
+
+
+          let gallery = [];
+          let fileList = [];
+          resInfo.map( item => {
+             fileList.push({url:item.img_url});
+             gallery.push(item.img_url);
+          })
+          this.infoForm.gallery = gallery;
+          console.log('-------',this.infoForm.gallery);
+          this.fileList = fileList;
+
+        })
+      }
     },
     components: {},
     mounted() {
@@ -357,6 +489,9 @@
       console.log('id',this.infoForm.id);
       this.getInfo();
       this.getCatalog();
+      this.getAttributeDesc();
+      this.getGoodsAttribute();
+      this.getGalleryList();
       console.log(api)
     }
   }
@@ -442,4 +577,16 @@
     height: 178px;
     display: block;
   }
+
+  .el-select .el-input {
+     width: 130px;
+   }
+   .input-with-select .el-input-group__prepend {
+     background-color: #fff;
+   }
+   .attributeList{
+     display: flex;;
+     justify-content: flex-start;
+     align-items: center;
+   }
 </style>
