@@ -53,7 +53,7 @@
         <navigator url="../goods/goods?id={{item.id}}">
           <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
-          <text class="price">￥{{item.retail_price}}</text>
+          <!-- <text class="price">￥{{item.retail_price}}</text> -->
         </navigator>
       </view>
     </view>
@@ -74,7 +74,7 @@
             <view class="text">
               <text class="name">{{item.name}}</text>
               <text class="desc">{{item.goods_brief}}</text>
-              <text class="price">￥{{item.retail_price}}</text>
+              <!-- <text class="price">￥{{item.retail_price}}</text> -->
             </view>
           </view>
         </navigator>
@@ -96,7 +96,7 @@
             <image class="img" src="{{item.scene_pic_url}}" background-size="cover"></image>
             <view class="np">
               <text class="name">{{item.title}}</text>
-              <text class="price">￥{{item.price_info}}元起</text>
+              <!-- <text class="price">￥{{item.price_info}}元起</text> -->
             </view>
             <text class="desc">{{item.subtitle}}</text>
           </navigator>
