@@ -107,8 +107,9 @@
                 :show-all-levels="false"
                 @change="attributeSelect($event,index)">
               </el-cascader>
-              <el-input v-model="item['value']" placeholder="请输入此属性内容"  @change="attributeChange($event,index)"  class="input-with-select">
+              <el-input v-model="item['value']"   type="textarea" autosize placeholder="请输入此属性内容"  @change="attributeChange($event,index)"  class="input-with-select">
               </el-input>
+              <el-button @click="deleteAttribute(index)">删除</el-button>
             </div>
             <el-button @click="addAttribute">添加一个新的属性</el-button>
           </el-form-item>
@@ -268,6 +269,10 @@
         this.infoForm.attribute[index]? '':(this.infoForm.attribute[index]={attribute_id:'',value:''})
         this.infoForm.attribute[index]['attribute_id'] = value[1];
         this.attributeList[index]['attribute_id'] = value;
+      },
+      deleteAttribute(index) {
+        this.attributeList[index] && this.attributeList.splice(index,1);
+        this.infoForm.attribute[index] && this.infoForm.attribute.splice(index,1);
       },
       handleRemove(file, fileList) {
          console.log('-------',this.infoForm.gallery);
