@@ -96,7 +96,7 @@
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
-              <div class="form-tip">图片尺寸：128*128或800*800（正方形）</div>
+              <div class="form-tip">图片尺寸：800*800（正方形）</div>
           </el-form-item>
 
           <el-form-item label="商品详情商品属性" prop="attribute">
