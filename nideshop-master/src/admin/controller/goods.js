@@ -50,20 +50,27 @@ module.exports = class extends Base {
     //添加goods_gallery
     const gallery_list = values['gallery'];
     await this.model('goods_gallery').where({goods_id:id}).delete();
-    const list = gallery_list.map((url ,index)=> {
-      return {img_url:url,goods_id:id,img_desc:'',sort_order:index}
-    })
-  
-    await this.model('goods_gallery').addMany(list);
+    if(gallery_list && gallery_list.length >0){
+      const list = gallery_list.map((url ,index)=> {
+        return {img_url:url,goods_id:id,img_desc:'',sort_order:index}
+      })
+
+      await this.model('goods_gallery').addMany(list);
+    }
+
 
     //添加商品属性
     const goods_attribute = values['attribute'];
     await this.model('goods_attribute').where({goods_id:id}).delete();
-    const a_list = goods_attribute.map(item => {
-      item.goods_id = id;
-      return item;
-    })
-    await this.model('goods_attribute').addMany(a_list);
+    if( goods_attribute && goods_attribute.length > 0 ) {
+      const a_list = goods_attribute.map(item => {
+        item.goods_id = id;
+        return item;
+      })
+      await this.model('goods_attribute').addMany(a_list);
+
+    }
+
 
 
     return this.success(values);
