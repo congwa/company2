@@ -115,13 +115,13 @@
           </el-form-item>
 
 
-          <el-form-item label="商品视频" prop="list_video_url" >
-            <el-upload class="" name="upload_video" drag accept=".flv"
+          <el-form-item label="商品视频" prop="desc_video_url" >
+            <el-upload class="el_video" name="upload_video" drag accept=".flv"
                        :action="api.rootUrl + '/upload/uploadVideo'"
                        :before-upload="beforeUploadVideo"
                        :on-success="handleUploadVideoSuccess" :headers="uploaderHeader">
-              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-              <video  v-if="infoForm.list_video_url" :src="infoForm.list_video_url" id="videoPlay" v-show="false" class="video">您的浏览器不支持 video 视屏播放。</video>
+              <div v-if="!infoForm.desc_video_url" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <video  v-if="infoForm.desc_video_url" :src="infoForm.desc_video_url" id="videoPlay" controls="controls" autoplay="autoplay" style="{width:100%,display:block}" class="video">您的浏览器不支持 video 视屏播放。</video>
               <i v-else class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
             <div class="form-tip">支持格式：flv</div>
@@ -196,7 +196,7 @@
           is_delete: false, //是否立即展示
           // new_pic_url: "",
           // new_sort_order: 10,
-          list_video_url: '',   // 视频为非必填选项
+          desc_video_url: '',   // 视频为非必填选项
           attribute:[]
         },
         editorOption: {
@@ -254,26 +254,34 @@
       addAttribute() {
         this.attributeList.push({attribute_id:['',''],value:''});
       },
+
       attributeChange(value,index) {
         console.log(value,index);
+        if( !this.infoForm.attribute || !this.infoForm.attribute[index]){
+          return;
+        }
         this.infoForm.attribute[index]? '':(this.infoForm.attribute[index]={attribute_id:'',value:''})
         this.infoForm.attribute[index]['value'] = value;
         this.attributeList[index]['value'] = value;
       },
+
       attributeSelect(value,index) {
         console.log(value,index);
         if(index == undefined || value === ''){
           console.log('fail');
           return;
         }
+        console.log(this.infoForm.attribute);
         this.infoForm.attribute[index]? '':(this.infoForm.attribute[index]={attribute_id:'',value:''})
         this.infoForm.attribute[index]['attribute_id'] = value[1];
         this.attributeList[index]['attribute_id'] = value;
       },
+
       deleteAttribute(index) {
         this.attributeList[index] && this.attributeList.splice(index,1);
         this.infoForm.attribute[index] && this.infoForm.attribute.splice(index,1);
       },
+
       handleRemove(file, fileList) {
          console.log('-------',this.infoForm.gallery);
          let url = file.url || file.response.data.fileUrl ;
@@ -283,26 +291,31 @@
          }
          console.log('删除',this.infoForm.gallery);
       },
+
       handlePictureCardPreview(file) {
          console.log(this.dialogImageUrl);
          this.dialogImageUrl = file.url;
          this.dialogVisible = true;
       },
+
       handleCardPreviewSuccess(res , file){
-        console.log('-------',this.infoForm);
+        alert('-------',this.infoForm);
         this.infoForm.gallery.push(res.data.fileUrl);
 
       },
+
       goBackPage() {
         this.$router.go(-1);
       },
-      //id  category_id goods_sn  name  brand_id  goods_number  keywords  goods_brief   goods_desc  is_on_sale  add_time  sort_order  is_delete attribute_category  counter_price extra_price is_new  goods_unit  primary_pic_url list_pic_url  retail_price  sell_volume primary_product_id  unit_price  promotion_desc  promotion_tag app_exclusive_price is_app_exclusive  is_limited  is_hot  desc_video_url
       //
       //
       //
       //现阶段可用参数  category_id  name  keywords  goods_brief  goods_desc sort_order  is_new primary_pic_url（商品主图） list_pic_url（商品列表图） is_hot  desc_video_url
       onSubmitInfo() {
-        console.log(this.infoForm.gallery);
+        console.log(this.infoForm);
+        if(this.infoForm.gallery && this.infoForm.gallery.length>0){
+          this.infoForm.gallery = this.infoForm.gallery.filter(item => item);
+        }
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
             this.axios.post('goods/store', this.infoForm).then((response) => {
@@ -384,7 +397,7 @@
        */
       handleUploadVideoSuccess(res, file) {
         if(res.errno === 0 ) {
-          this.infoForm.list_video_url = res.data.fileUrl;
+          this.infoForm.desc_video_url = res.data.fileUrl;
         }
         console.log('视频上传成功',file);
       },
@@ -453,7 +466,7 @@
         this.axios.post('goods/infogoods',{id:this.infoForm.id}).then((response) => {
           console.log('商品属性',response);
           let resInfo = response.data.data;
-          this.infoForm.attribute = resInfo;
+
 
           let res =[];
           resInfo.map(item => {
@@ -465,16 +478,25 @@
             b.value = item.value;
             res.push(b);
           })
-          this.attributeList = res;
+          that.attributeList = res;
+
+          let info = [];
+          resInfo.map(item => {
+            let assign = Object.assign({},item);
+            console.log('22222222222',assign);
+            delete assign.attribute_category_id;
+            info.push(assign);
+          })
+          that.infoForm.attribute = info;
+          // console.log('111111',info);
         })
       },
 
       getGalleryList() {
+        var that = this;
         this.axios.post('goods/galleryinfo',{id:this.infoForm.id}).then((response) => {
-          console.log('轮播图属性',response);
+
           let resInfo = response.data.data;
-
-
 
           let gallery = [];
           let fileList = [];
@@ -482,9 +504,9 @@
              fileList.push({url:item.img_url});
              gallery.push(item.img_url);
           })
-          this.infoForm.gallery = gallery;
-          console.log('-------',this.infoForm.gallery);
-          this.fileList = fileList;
+          that.infoForm.gallery = gallery;
+          that.fileList = fileList;
+          console.log('轮播图属性',gallery,that.infoForm);
 
         })
       }
@@ -499,12 +521,25 @@
       this.getGoodsAttribute();
       this.getGalleryList();
       console.log(api)
+    },
+    watch: {
+      infoForm(n,o){
+        if(!n.gallery){
+          console.log('gallery low');
+        }
+      }
     }
   }
 
 </script>
 
 <style>
+
+  .el_video .el-upload-dragger{
+      width: auto !important;
+      height: auto !important;
+
+  }
  .el-form-item{
     overflow: visible;
   }
