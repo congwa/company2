@@ -31,6 +31,10 @@
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
 
+          <el-form-item label="零售价格" prop="retail_price">
+            <el-input v-model="infoForm.retail_price" min="0" max="1000000" step="0.01" type="number"></el-input>
+          </el-form-item>
+
           <el-form-item label="商品关键词(用于搜寻用)" prop="keywords">
             <el-input v-model="infoForm.keywords"></el-input>
           </el-form-item>
@@ -47,6 +51,7 @@
             <quill-editor ref="myTextEditor"
                 v-model="infoForm.goods_desc"
                 :config="editorOption"
+                :style="{width:388}"
                 @blur="onEditorBlur($event)"
                 @change="onEditorChange($event)"
                 @focus="onEditorFocus($event)"
@@ -175,6 +180,7 @@
         infoForm: {
           id: 0,              // 商品id
           name: "",           // 商品名字
+          retail_price:0,
           category_id:'', // 商品分类选项
           keywords: '',   // 商品关键词 用于搜寻
 
@@ -212,6 +218,10 @@
         infoRules: {
           name: [
             { required: true, message: '请输入名称', trigger: 'blur' },
+
+          ],
+          retail_price: [
+            { required: true, type:'number' ,type:'string',message: '请输入零售价格', trigger: 'blur' },
 
           ],
 
@@ -312,7 +322,7 @@
       //
       //现阶段可用参数  category_id  name  keywords  goods_brief  goods_desc sort_order  is_new primary_pic_url（商品主图） list_pic_url（商品列表图） is_hot  desc_video_url
       onSubmitInfo() {
-        console.log(this.infoForm);
+        console.log('要保存的商品详情列表图',this.infoForm.gallery);
         if(this.infoForm.gallery && this.infoForm.gallery.length>0){
           this.infoForm.gallery = this.infoForm.gallery.filter(item => item);
         }
@@ -428,7 +438,7 @@
 
         //加载商品详情
         let that = this
-        this.axios.get('goods/info', {
+        return this.axios.get('goods/info', {
           params: {
             id: that.infoForm.id
           }
@@ -438,6 +448,7 @@
           resInfo.is_new = resInfo.is_new ? true : false;
           resInfo.is_show = resInfo.is_show ? true : false;
           resInfo.is_delete = resInfo.is_delete? true : false;
+          resInfo.retail_price = resInfo.retail_price.toString();
           that.infoForm = resInfo;
         })
       },
@@ -512,10 +523,10 @@
       }
     },
     components: {},
-    mounted() {
+    async mounted() {
       this.infoForm.id = this.$route.query.id || 0;
       console.log('id',this.infoForm.id);
-      this.getInfo();
+      await this.getInfo();
       this.getCatalog();
       this.getAttributeDesc();
       this.getGoodsAttribute();
@@ -534,7 +545,12 @@
 </script>
 
 <style>
-
+.quill-editor{
+  width: 388px;
+}
+  .ql-editor .ql-indent-1:not(.ql-direction-rtl){
+    padding-left: 0px !important;
+  }
   .el_video .el-upload-dragger{
       width: auto !important;
       height: auto !important;

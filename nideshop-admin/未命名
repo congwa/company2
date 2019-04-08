@@ -1,0 +1,9 @@
+koa2中间件传入一个  函数 参数为 ctx next
+那么 我们创造一个函数 接收参数为 中间件函数  返回可以级联的函数  ctx,next  (可以级联的函数为 执行中间件next前面部分,返回next后面部分)
+
+函数内容为 定义一个下标index表示第几个中间件 为了使index可以缓存这里使用闭包 声明一个函数 返回值为next后面部分 并且在函数中执行next前面部分代码
+reutrn function(){
+  return Promise.resolve(fn(ctx,function next() {
+    dispatch(index+1);  //当用户在中间件调用next()方法时候 执行下一个中间件代码直到遇到next  这样依次循环 next前面的代码执行完  之后就是用户处理
+  })
+}
