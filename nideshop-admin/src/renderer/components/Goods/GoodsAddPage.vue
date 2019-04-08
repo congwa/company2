@@ -344,9 +344,11 @@
               } else {
                 this.$message({
                   type: 'error',
-                  message: '保存失败'
+                  message: '保存失败,刷新流量器重试'
                 })
               }
+            }).catch(err => {
+              alert('保存失败,刷新流量器重试');
             })
           } else {
             return false;
@@ -642,7 +644,7 @@
   }
 
   .el-select .el-input {
-     width: 130px;
+     width: 400px;
    }
    .input-with-select .el-input-group__prepend {
      background-color: #fff;
