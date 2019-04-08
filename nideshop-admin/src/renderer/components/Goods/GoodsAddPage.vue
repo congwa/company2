@@ -309,7 +309,7 @@
       },
 
       handleCardPreviewSuccess(res , file){
-        alert('-------',this.infoForm);
+        // alert('-------',this.infoForm);
         this.infoForm.gallery.push(res.data.fileUrl);
 
       },
