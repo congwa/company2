@@ -13,7 +13,7 @@
     <view class="c">
       <text class="name">{{goods.name}}</text>
       <text class="desc">{{goods.goods_brief}}</text>
-      <!-- <text class="price">￥{{goods.retail_price}}</text> -->
+      <text class="price">￥{{goods.retail_price}}</text>
       <!-- <view class="brand" wx:if="{{brand.name}}">
         <navigator url="../brandDetail/brandDetail?id={{brand.brandId}}">
           <text>{{brand.name}}</text>

@@ -53,7 +53,7 @@
         <navigator url="../goods/goods?id={{item.id}}">
           <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
-          <!-- <text class="price">￥{{item.retail_price}}</text> -->
+          <text class="price">￥{{item.retail_price}}</text>
         </navigator>
       </view>
     </view>
@@ -74,7 +74,7 @@
             <view class="text">
               <text class="name">{{item.name}}</text>
               <text class="desc">{{item.goods_brief}}</text>
-              <!-- <text class="price">￥{{item.retail_price}}</text> -->
+              <text class="price">￥{{item.retail_price}}</text>
             </view>
           </view>
         </navigator>
@@ -115,7 +115,7 @@
         <navigator url="../goods/goods?id={{iitem.id}}" class="item">
           <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
           <view class="name">{{iitem.name}}</view>
-          <!-- <view class="price">￥{{iitem.retail_price}}</view> -->
+          <view class="price">￥{{iitem.retail_price}}</view>
         </navigator>
       </block>
     </view>
