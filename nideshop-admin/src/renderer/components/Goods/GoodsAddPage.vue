@@ -309,7 +309,7 @@
       },
 
       handleCardPreviewSuccess(res , file){
-        alert('-------',this.infoForm);
+        // alert('-------',this.infoForm);
         this.infoForm.gallery.push(res.data.fileUrl);
 
       },
@@ -326,6 +326,12 @@
         if(this.infoForm.gallery && this.infoForm.gallery.length>0){
           this.infoForm.gallery = this.infoForm.gallery.filter(item => item);
         }
+        if(!this.infoForm.gallery){
+          alert('如果*详情列表图*已经上传并显示,发生数据错误,请刷新重填');
+        }
+        if(!this.infoForm.attribute){
+          alert('如果*商品属性*已经上传并显示,发生数据错误,请刷新重填');
+        }
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
             this.axios.post('goods/store', this.infoForm).then((response) => {
@@ -338,9 +344,11 @@
               } else {
                 this.$message({
                   type: 'error',
-                  message: '保存失败'
+                  message: '保存失败,刷新流量器重试'
                 })
               }
+            }).catch(err => {
+              alert('保存失败,刷新流量器重试');
             })
           } else {
             return false;
@@ -636,7 +644,7 @@
   }
 
   .el-select .el-input {
-     width: 130px;
+     width: 400px;
    }
    .input-with-select .el-input-group__prepend {
      background-color: #fff;

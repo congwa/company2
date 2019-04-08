@@ -67,7 +67,7 @@
     }
 
     .form-table-box .el-input__inner {
-        max-width: 240px;
+        /* max-width: 240px; */
     }
 
     .form-table-box .el-textarea {

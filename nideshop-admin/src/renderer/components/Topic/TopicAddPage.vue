@@ -29,6 +29,17 @@
                         </el-upload>
                         <div class="form-tip">图片尺寸：750*415</div>
                     </el-form-item>
+                    <el-form-item label="专题详情" prop="content">
+                      <quill-editor ref="myTextEditor"
+                          v-model="infoForm.content"
+                          :config="editorOption"
+                          :style="{width:388}"
+                          @blur="onEditorBlur($event)"
+                          @change="onEditorChange($event)"
+                          @focus="onEditorFocus($event)"
+                          @ready="onEditorReady($event)">
+                      </quill-editor>
+                    </el-form-item>
                     <el-form-item label="排序">
                         <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
                     </el-form-item>
@@ -60,7 +71,8 @@
                     subtitle: '',
                     sort_order: 100,
                     is_show: true,
-                  scene_pic_url: ''
+                    scene_pic_url: '',
+                    content:''
                 },
                 infoRules: {
                   title: [
@@ -76,6 +88,20 @@
             }
         },
         methods: {
+            onEditorBlur(editor) {
+            console.log('editor blur!', editor)
+            },
+            onEditorFocus(editor) {
+              console.log('editor focus!', editor)
+            },
+            onEditorReady(editor) {
+              console.log('editor ready!', editor)
+            },
+            onEditorChange({ editor, html, text }) {
+              // console.log('editor change!', editor, html, text)
+              this.infoForm.content = html;
+              console.log('商品详情',html);
+            },
             goBackPage() {
                 this.$router.go(-1);
             },
