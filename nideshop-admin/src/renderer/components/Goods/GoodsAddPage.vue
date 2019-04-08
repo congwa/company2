@@ -326,6 +326,12 @@
         if(this.infoForm.gallery && this.infoForm.gallery.length>0){
           this.infoForm.gallery = this.infoForm.gallery.filter(item => item);
         }
+        if(!this.infoForm.gallery){
+          alert('如果*详情列表图*已经上传并显示,发生数据错误,请刷新重填');
+        }
+        if(!this.infoForm.attribute){
+          alert('如果*商品属性*已经上传并显示,发生数据错误,请刷新重填');
+        }
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
             this.axios.post('goods/store', this.infoForm).then((response) => {
