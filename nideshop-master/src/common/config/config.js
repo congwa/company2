@@ -1,7 +1,7 @@
 // default config
 module.exports = {
   default_module: 'api',
-  upimg_url: 'https://www.wangcong.fun:8002', //图片上传到的服务器地址s https://www.wangcong.fun:8002
+  upimg_url: 'http://127.0.0.1:8360', //图片上传到的服务器地址s（写入数据库用） https://www.wangcong.fun:8002
   weixin: {
     appid: 'wxb02b4a9c72aacbf3', // 小程序 appid
     secret: 'e74ce0e56289dd95341f52dfdc9e1b0c', // 小程序密钥
