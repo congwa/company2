@@ -156,7 +156,7 @@ module.exports = class extends Base {
     if(!think.isEmpty(data)) {
       return that.success({
         name: 'upload_richText',
-        fileUrl: data.url
+        fileUrl:think.config('upimg_url') + data.url
       })
     }
 
