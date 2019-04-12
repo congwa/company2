@@ -97,7 +97,7 @@ module.exports = class extends Base {
 
     return that.success({
       name: 'image_url',
-      fileUrl:  think.config('upimg_url') +filename
+      fileUrl:  think.config('upimg_url') + filename
     });
   }
 
@@ -156,7 +156,7 @@ module.exports = class extends Base {
     if(!think.isEmpty(data)) {
       return that.success({
         name: 'upload_richText',
-        fileUrl: data.url
+        fileUrl:think.config('upimg_url')+ data.url
       })
     }
 
