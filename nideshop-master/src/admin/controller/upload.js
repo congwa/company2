@@ -10,7 +10,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/brand/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/brand/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/brand'); //确保目录真的存在
     const is = fs.createReadStream(brandFile.path);
     const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);
@@ -28,7 +28,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/brand/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/brand/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/brand'); //确保目录真的存在
 
     const is = fs.createReadStream(brandFile.path);
@@ -48,7 +48,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/category/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/category/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/category'); //确保目录真的存在
 
     const is = fs.createReadStream(imageFile.path);
@@ -69,7 +69,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/topic/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/topic/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/topic'); //确保目录真的存在
 
     const is = fs.createReadStream(imageFile.path);
@@ -88,7 +88,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/banner/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/banner/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/banner'); //确保目录真的存在
 
     const is = fs.createReadStream(imageFile.path);
@@ -107,7 +107,7 @@ module.exports = class extends Base {
       return this.fail('保存失败');
     }
     const that = this;
-    const filename = '/static/upload/channel/' + think.uuid(32) + '.jpg';
+    const filename = '/static/upload/channel/' + think.uuid(32) + '.png';
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/channel'); //确保目录真的存在
 
     const is = fs.createReadStream(imageFile.path);
