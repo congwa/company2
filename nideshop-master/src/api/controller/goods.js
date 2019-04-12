@@ -285,7 +285,7 @@ module.exports = class extends Base {
    * @returns {Promise.<Promise|PreventPromise|void>}
    */
   async countAction() {
-    const goodsCount = await this.model('goods').where({is_delete: 0, is_on_sale: 1}).count('id');
+    const goodsCount = await this.model('goods').where({is_delete: 0}).count('id');
 
     return this.success({
       goodsCount: goodsCount

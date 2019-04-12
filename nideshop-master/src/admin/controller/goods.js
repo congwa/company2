@@ -44,21 +44,21 @@ module.exports = class extends Base {
       values.is_delete = values.is_delete ? 1 : 0;  // 0代表上架  1代表下架
       var v;
       if (id > 0) {
-        console.log('***************1');
+        // console.log('***************1');
         await model.where({id: id}).update(values);
-        console.log('***************71');
+        // console.log('***************71');
       } else {
         delete values.id;
-        console.log('***************72');
+        // console.log('***************72');
         v = await model.add(values);
         id = v;
       }
-      console.log('-------------------------',id);
+      // console.log('-------------------------',id);
       //添加goods_gallery
       const gallery_list = values['gallery'];
 
       if(gallery_list && gallery_list.length >0){
-        console.log('***************73');
+        // console.log('***************73');
         await galleryModel.where({goods_id:id}).delete();
         const list = gallery_list.map((url ,index)=> {
           return {img_url:url,goods_id:id,img_desc:'',sort_order:index}
@@ -72,7 +72,7 @@ module.exports = class extends Base {
       const goods_attribute = values['attribute'];
 
       if( goods_attribute && goods_attribute.length > 0 ) {
-        console.log('***************74');
+        // console.log('***************74');
         await attributeModel.where({goods_id:id}).delete();
         const a_list = goods_attribute.map(item => {
           item.goods_id = id;

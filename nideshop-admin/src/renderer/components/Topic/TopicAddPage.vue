@@ -30,15 +30,19 @@
                         <div class="form-tip">图片尺寸：750*415</div>
                     </el-form-item>
                     <el-form-item label="专题详情" prop="content">
-                      <quill-editor ref="myTextEditor"
+                      <quill-editor ref="myQuillEditor"
                           v-model="infoForm.content"
-                          :config="editorOption"
                           :style="{width:388}"
                           @blur="onEditorBlur($event)"
                           @change="onEditorChange($event)"
                           @focus="onEditorFocus($event)"
                           @ready="onEditorReady($event)">
                       </quill-editor>
+                      <el-upload class="upload-demo" name="upload_richText" :action="api.rootUrl + '/upload/uploadRichText'" :before-upload='beforeUpload'  :on-success='upScuccess'
+                         :headers="uploaderHeader"
+                         ref="upload" style="display:none">
+                         <el-button size="small" type="primary" id="imgInput" v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="插入中,请稍候">点击上传</el-button>
+                      </el-upload>
                     </el-form-item>
                     <el-form-item label="排序">
                         <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
@@ -58,9 +62,11 @@
 
 <script>
     import api from '@/config/api';
+    import * as Quill from 'quill'   
     export default {
         data() {
             return {
+                fullscreenLoading: false,
                 api:api,
                 uploaderHeader: {
                     'X-Nideshop-Token': localStorage.getItem('token') || '',
@@ -100,7 +106,7 @@
             onEditorChange({ editor, html, text }) {
               // console.log('editor change!', editor, html, text)
               this.infoForm.content = html;
-              console.log('商品详情',html);
+              console.log('专题详情',html);
             },
             goBackPage() {
                 this.$router.go(-1);
@@ -153,14 +159,61 @@
                     resInfo.is_show = resInfo.is_show ? true : false;
                     that.infoForm = resInfo;
                 })
-            }
+            },
 
+                      // 图片上传之前调取的函数
+            beforeUpload(file) {
+              this.fullscreenLoading = true;
+            },
+
+            // 图片上传成功回调   插入到编辑器中
+            upScuccess(res, file, fileList) {
+              this.fullscreenLoading = false;
+              let vm = this
+              let url = ''
+              if (this.uploadType === 'image') {    // 获得文件上传后的URL地址
+                url = res.data.fileUrl;
+              } else if (this.uploadType === 'video') {
+                url = res.data.fileUrl;
+              }
+              console.log(url);
+              if (url != null && url.length > 0) {  // 将文件上传后的URL地址插入到编辑器文本中
+                let value = url
+                vm.addRange = vm.$refs.myQuillEditor.quill.getSelection()
+                value = value.indexOf('http') !== -1 ? value : 'http:' + value
+                vm.$refs.myQuillEditor.quill.insertEmbed(vm.addRange !== null ? vm.addRange.index : 0, vm.uploadType, value, Quill.sources.USER)   // 调用编辑器的 insertEmbed 方法，插入URL
+                console.log('插入成功');
+              } else {
+                this.$message.error(`${vm.uploadType}插入失败`)
+              }
+              this.$refs['upload'].clearFiles()    // 插入成功后清除input的内容
+            },
+                        // 点击图片ICON触发事件
+            imgHandler(state) {
+               this.addRange = this.$refs.myQuillEditor.quill.getSelection()
+               if (state) {
+                 let fileInput = document.getElementById('imgInput')
+                 fileInput.click() // 加一个触发事件
+               }
+               this.uploadType = 'image'
+            },
+            // 点击视频ICON触发事件
+           videoHandler(state) {
+             this.addRange = this.$refs.myQuillEditor.quill.getSelection()
+             if (state) {
+               let fileInput = document.getElementById('imgInput')
+               fileInput.click() // 加一个触发事件
+             }
+             this.uploadType = 'video'
+           }
         },
         components: {},
         mounted() {
             this.infoForm.id = this.$route.query.id || 0;
             this.getInfo();
-            console.log(api)
+            console.log(api);
+            this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
+            this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('video', this.videoHandler)  // 为视频ICON绑定事件
         }
     }
 
