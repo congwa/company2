@@ -48,7 +48,7 @@
 
 
           <el-form-item label="商品详情" prop="goods_desc">
-            <quill-editor ref="myTextEditor"
+            <quill-editor ref="myQuillEditor"
                 v-model="infoForm.goods_desc"
                 :config="editorOption"
                 :style="{width:388}"

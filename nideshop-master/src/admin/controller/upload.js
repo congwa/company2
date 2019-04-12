@@ -147,14 +147,28 @@ module.exports = class extends Base {
     if (think.isEmpty(file)) {
       return this.fail('保存失败');
     }
-    const that = this;
+    var that = this;
+
+    const MD5Serivce = this.service('MD5', 'admin');
+    const strMd5 = await MD5Serivce.readFileMd5(file.path);
+  console.log(strMd5);
+    const data = await this.model('md5_url').where({md5: strMd5}).find();
+    if(!think.isEmpty(data)) {
+      return that.success({
+        name: 'upload_richText',
+        fileUrl: data.url
+      })
+    }
+
     const filename = '/static/upload/richText/' + think.uuid(32) + '.png';
+
+    await this.model('md5_url').add({md5:strMd5,url:filename})
     await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/richText'); //确保目录真的存在
     const is = fs.createReadStream(file.path);
     const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);
     is.pipe(os);
     return that.success({
-      name: 'upload_video',
+      name: 'upload_richText',
       fileUrl:  think.config('upimg_url') +filename
     });
   }
