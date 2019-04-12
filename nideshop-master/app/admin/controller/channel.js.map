@@ -1,0 +1,42 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/admin/controller/channel.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Controller",
+        "indexAction",
+        "channel",
+        "model",
+        "order",
+        "sort_order",
+        "select",
+        "success",
+        "addAction",
+        "isPost",
+        "id",
+        "post",
+        "values",
+        "name",
+        "url",
+        "icon_url",
+        "where",
+        "update",
+        "add",
+        "infoAction",
+        "get",
+        "data",
+        "find",
+        "deleteAction",
+        "limit",
+        "delete"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,UAApB,CAA+B;AAC9C;;;;AAIMC,aAAN,GAAoB;AAAA;;AAAA;AAClB,YAAMC,UAAU,MAAM,MAAKC,KAAL,CAAW,SAAX,EAAsBC,KAAtB,CAA4B,EAACC,YAAY,KAAb,EAA5B,EAAiDC,MAAjD,EAAtB;AACA,aAAO,MAAKC,OAAL,CAAaL,OAAb,CAAP;AAFkB;AAGnB;;AAED;;;;;;;;;;;;AAYMM,WAAN,GAAkB;AAAA;;AAAA;AAChB,UAAI,CAAC,OAAKC,MAAV,EAAkB;AAChB,eAAO,KAAP;AACD;AACD,YAAMC,KAAK,OAAKC,IAAL,CAAU,IAAV,CAAX;;AAEA,YAAMR,QAAQ,OAAKA,KAAL,CAAW,SAAX,CAAd;;AAEA,UAAIS,SAAS;AACXF,YAAG,OAAKC,IAAL,CAAU,IAAV,CADQ;AAEXE,cAAM,OAAKF,IAAL,CAAU,MAAV,CAFK;AAGXG,aAAK,iCAAiC,OAAKH,IAAL,CAAU,aAAV,CAH3B;AAIXI,kBAAU,OAAKJ,IAAL,CAAU,UAAV,CAJC;AAKXN,oBAAY,OAAKM,IAAL,CAAU,YAAV;AALD,OAAb;AAOA,UAAID,KAAK,CAAT,EAAY;AACV,cAAMP,MAAMa,KAAN,CAAY,EAACN,IAAIA,EAAL,EAAZ,EAAsBO,MAAtB,CAA6BL,MAA7B,CAAN;AACD,OAFD,MAEO;AACL,eAAOA,OAAOF,EAAd;AACA,cAAMP,MAAMe,GAAN,CAAUN,MAAV,CAAN;AACD;AACD,aAAO,OAAKL,OAAL,CAAaK,MAAb,CAAP;AArBgB;AAsBjB;;AAEKO,YAAN,GAAkB;AAAA;;AAAA;AAChB,YAAMT,KAAK,OAAKC,IAAL,CAAU,IAAV,KAAmB,OAAKS,GAAL,CAAS,IAAT,CAA9B;;AAEA,YAAMjB,QAAQ,OAAKA,KAAL,CAAW,SAAX,CAAd;AACA,YAAMkB,OAAO,MAAMlB,MAAMa,KAAN,CAAY,EAACN,IAAIA,EAAL,EAAZ,EAAsBY,IAAtB,EAAnB;AACA,aAAO,OAAKf,OAAL,CAAac,IAAb,CAAP;AALgB;AAMjB;;AAGD;;;;AAIME,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMb,KAAK,OAAKC,IAAL,CAAU,IAAV,CAAX;AACA,YAAM,OAAKR,KAAL,CAAW,SAAX,EAAsBa,KAAtB,CAA4B,EAACN,IAAIA,EAAL,EAA5B,EAAsCc,KAAtC,CAA4C,CAA5C,EAA+CC,MAA/C,EAAN;;AAEA;;AAEA,aAAO,OAAKlB,OAAL,EAAP;AANmB;AAOpB;AAlE6C,CAAhD",
+    "file": "../../../src/admin/controller/channel.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Controller {\n  /**\n   * 获取banner信息\n   * @returns {Promise<void>}\n   */\n  async indexAction() {\n    const channel = await this.model('channel').order({sort_order: 'asc'}).select();\n    return this.success(channel);\n  }\n\n  /**\n   * CREATE TABLE `nideshop_channel` (\n   `id` int(11) NOT NULL AUTO_INCREMENT,\n   `name` varchar(45) NOT NULL DEFAULT '',\n   `url` varchar(255) NOT NULL DEFAULT '',\n   `icon_url` varchar(255) NOT NULL DEFAULT '',\n   `sort_order` int(4) unsigned NOT NULL DEFAULT '10',\n   PRIMARY KEY (`id`)\n   ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='分类信息\\n';\n   * @returns {Promise<*>}\n   */\n\n  async addAction() {\n    if (!this.isPost) {\n      return false;\n    }\n    const id = this.post('id');\n\n    const model = this.model('channel');\n\n    let values = {\n      id:this.post('id'),\n      name: this.post('name'),\n      url: '/pages/category/category?id=' + this.post('category_id'),\n      icon_url: this.post('icon_url'),\n      sort_order: this.post('sort_order')\n    };\n    if (id > 0) {\n      await model.where({id: id}).update(values);\n    } else {\n      delete values.id;\n      await model.add(values);\n    }\n    return this.success(values);\n  }\n\n  async infoAction(){\n    const id = this.post('id') || this.get('id');\n\n    const model = this.model('channel');\n    const data = await model.where({id: id}).find();\n    return this.success(data);\n  }\n\n\n  /**\n   * 删除一个banner\n   * @returns {Promise<void>}\n   */\n  async deleteAction() {\n    const id = this.post('id');\n    await this.model('channel').where({id: id}).limit(1).delete();\n\n    // TODO 事务，验证订单是否可删除（只有失效的订单才可以删除）\n\n    return this.success();\n  }\n};\n"
+    ]
+}

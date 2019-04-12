@@ -1,0 +1,53 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/api/controller/index.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "banner",
+        "model",
+        "where",
+        "ad_position_id",
+        "select",
+        "channel",
+        "order",
+        "sort_order",
+        "newGoods",
+        "field",
+        "is_new",
+        "limit",
+        "hotGoods",
+        "is_hot",
+        "brandList",
+        "new_sort_order",
+        "topicList",
+        "categoryList",
+        "parent_id",
+        "name",
+        "newCategoryList",
+        "categoryItem",
+        "childCategoryIds",
+        "id",
+        "getField",
+        "console",
+        "log",
+        "categoryGoods",
+        "length",
+        "category_id",
+        "push",
+        "goodsList",
+        "success",
+        "newGoodsList",
+        "hotGoodsList"
+    ],
+    "mappings": "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",
+    "file": "../../../src/api/controller/index.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async indexAction() {\n    const banner = await this.model('ad').where({ad_position_id: 1}).select();\n    const channel = await this.model('channel').order({sort_order: 'asc'}).select();\n    const newGoods = await this.model('goods').field(['id', 'name', 'list_pic_url', 'retail_price']).where({is_new: 1}).limit(4).select();\n    const hotGoods = await this.model('goods').field(['id', 'name', 'list_pic_url', 'retail_price', 'goods_brief']).where({is_hot: 1}).limit(3).select();\n    const brandList = await this.model('brand').where({is_new: 1}).order({new_sort_order: 'asc'}).limit(4).select();\n    const topicList = await this.model('topic').limit(3).select();\n\n\n    const categoryList = await this.model('category').where({parent_id: 0, name: ['<>', '推荐']}).select(); // 找出所有的一级分类\n    const newCategoryList = [];\n    //console.log('categoryList: ',categoryList);\n    for (const categoryItem of categoryList) {\n      const childCategoryIds = await this.model('category').where({parent_id: categoryItem.id}).getField('id', 100);  // 找出这个一级分类对应的子分类\n      console.log('ids',childCategoryIds);\n      let categoryGoods;\n      if(childCategoryIds.length == 0 ){   // 当父分类下面没有子分类的情况\n        categoryGoods = [];\n      }else{\n        categoryGoods = await this.model('goods').field(['id', 'name', 'list_pic_url', 'retail_price']).where({category_id: ['IN', childCategoryIds]}).limit(7).select(); // 把这些子分类的详情找出来\n      }\n      newCategoryList.push({\n        id: categoryItem.id,\n        name: categoryItem.name,\n        goodsList: categoryGoods\n      });\n    }\n\n    return this.success({\n      banner: banner,\n      channel: channel,        // 首页商品显示类型\n      newGoodsList: newGoods,  // 新添加的商品\n      hotGoodsList: hotGoods,  // 热门商品\n      brandList: brandList,    // 品牌\n      topicList: topicList,    // 主题\n      categoryList: newCategoryList //  详细分类列表\n    });\n  }\n};\n"
+    ]
+}

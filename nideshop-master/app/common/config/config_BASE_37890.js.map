@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/common/config/config_BASE_37890.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "default_module",
+        "upimg_url",
+        "weixin",
+        "appid",
+        "secret",
+        "mch_id",
+        "partner_key",
+        "notify_url",
+        "express",
+        "appkey",
+        "request_url"
+    ],
+    "mappings": "AAAA;AACAA,OAAOC,OAAP,GAAiB;AACfC,kBAAgB,KADD;AAEfC,aAAW,uBAFI,EAEqB;AACpCC,UAAQ;AACNC,WAAO,oBADD,EACuB;AAC7BC,YAAQ,kCAFF,EAEsC;AAC5CC,YAAQ,EAHF,EAGM;AACZC,iBAAa,EAJP,EAIW;AACjBC,gBAAY,EALN,CAKS;AALT,GAHO;AAUfC,WAAS;AACP;AACAL,WAAO,EAFA,EAEI;AACXM,YAAQ,EAHD,EAGK;AACZC,iBAAa;AAJN;AAVM,CAAjB",
+    "file": "../../../src/common/config/config_BASE_37890.js",
+    "sourcesContent": [
+        "// default config\nmodule.exports = {\n  default_module: 'api',\n  upimg_url: 'http://127.0.0.1:8360', //图片上传到的服务器地址s https://www.wangcong.fun:8002\n  weixin: {\n    appid: 'wxb02b4a9c72aacbf3', // 小程序 appid\n    secret: 'e74ce0e56289dd95341f52dfdc9e1b0c', // 小程序密钥\n    mch_id: '', // 商户帐号ID\n    partner_key: '', // 微信支付密钥\n    notify_url: '' // 微信异步通知，例：https://www.nideshop.com/api/pay/notify\n  },\n  express: {\n    // 快递物流信息查询使用的是快递鸟接口，申请地址：http://www.kdniao.com/\n    appid: '', // 对应快递鸟用户后台 用户ID\n    appkey: '', // 对应快递鸟用户后台 API key\n    request_url: 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx'\n  }\n};\n"
+    ]
+}
