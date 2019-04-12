@@ -137,4 +137,25 @@ module.exports = class extends Base {
       fileUrl:  think.config('upimg_url') +filename
     });
   }
+
+  /**
+   * 富文本图片上传专用
+   * @returns {Promise<void>}
+   */
+  async uploadRichTextAction() {
+    const file = this.file('upload_richText');
+    if (think.isEmpty(file)) {
+      return this.fail('保存失败');
+    }
+    const that = this;
+    const filename = '/static/upload/richText/' + think.uuid(32) + '.png';
+    await fss.ensureDir(think.ROOT_PATH + '/www' +'/static/upload/richText'); //确保目录真的存在
+    const is = fs.createReadStream(file.path);
+    const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);
+    is.pipe(os);
+    return that.success({
+      name: 'upload_video',
+      fileUrl:  think.config('upimg_url') +filename
+    });
+  }
 };

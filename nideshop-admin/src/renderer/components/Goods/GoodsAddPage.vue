@@ -57,6 +57,11 @@
                 @focus="onEditorFocus($event)"
                 @ready="onEditorReady($event)">
             </quill-editor>
+            <el-upload class="upload-demo" name="upload_richText" :action="api.rootUrl + '/upload/uploadRichText'" :before-upload='beforeUpload'  :on-success='upScuccess'
+               :headers="uploaderHeader"
+               ref="upload" style="display:none">
+               <el-button size="small" type="primary" id="imgInput" v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="插入中,请稍候">点击上传</el-button>
+            </el-upload>
           </el-form-item>
 
           <el-form-item label="商品主图" prop="primary_pic_url">
@@ -169,6 +174,7 @@
   export default {
     data() {
       return {
+        fullscreenLoading: false,
         api:api,
         dialogImageUrl: '',
         dialogVisible: false,
@@ -383,6 +389,51 @@
         }
       },
 
+      // 图片上传之前调取的函数
+      beforeUpload(file) {
+        this.fullscreenLoading = true;
+      },
+
+      // 图片上传成功回调   插入到编辑器中
+      upScuccess(res, file, fileList) {
+        this.fullscreenLoading = false;
+        let vm = this
+        let url = ''
+        if (this.uploadType === 'image') {    // 获得文件上传后的URL地址
+        url = res.data.fileUrl;
+        } else if (this.uploadType === 'video') {
+        url = res.data.fileUrl;
+        }
+        console.log(url);
+        if (url != null && url.length > 0) {  // 将文件上传后的URL地址插入到编辑器文本中
+        let value = url
+        vm.addRange = vm.$refs.myQuillEditor.quill.getSelection()
+        value = value.indexOf('http') !== -1 ? value : 'http:' + value
+        vm.$refs.myQuillEditor.quill.insertEmbed(vm.addRange !== null ? vm.addRange.index : 0, vm.uploadType, value, Quill.sources.USER)   // 调用编辑器的 insertEmbed 方法，插入URL
+        console.log('插入成功');
+        } else {
+        this.$message.error(`${vm.uploadType}插入失败`)
+        }
+        this.$refs['upload'].clearFiles()    // 插入成功后清除input的内容
+      },
+              // 点击图片ICON触发事件
+      imgHandler(state) {
+        this.addRange = this.$refs.myQuillEditor.quill.getSelection()
+        if (state) {
+         let fileInput = document.getElementById('imgInput')
+         fileInput.click() // 加一个触发事件
+        }
+        this.uploadType = 'image'
+      },
+      // 点击视频ICON触发事件
+      videoHandler(state) {
+        this.addRange = this.$refs.myQuillEditor.quill.getSelection()
+        if (state) {
+        let fileInput = document.getElementById('imgInput')
+        fileInput.click() // 加一个触发事件
+        }
+        this.uploadType = 'video'
+      },
 
       /**
        * 商品主图上传成功
@@ -532,6 +583,8 @@
     },
     components: {},
     async mounted() {
+      this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
+      this.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('video', this.videoHandler)  // 为视频ICON绑定事件
       this.infoForm.id = this.$route.query.id || 0;
       console.log('id',this.infoForm.id);
       await this.getInfo();
