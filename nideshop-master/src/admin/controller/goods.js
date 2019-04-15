@@ -34,7 +34,6 @@ module.exports = class extends Base {
     const model = this.model('goods');
     const galleryModel = this.model('goods_gallery').db(model.db());
     const attributeModel = this.model('goods_attribute').db(model.db());
-    const product_db =  this.model('product').db(model.db());
     try{
       //添加goods表
       await model.startTrans();
@@ -51,8 +50,8 @@ module.exports = class extends Base {
         id = v;
       }
 
-      // 更新 product表
-
+      const product_db = this.model('product').db(model.db());
+      //更新 product表
       let p_values = {
         goods_id: id,
         goods_specification_ids: '',
@@ -94,7 +93,7 @@ module.exports = class extends Base {
         await attributeModel.addMany(a_list);
 
       }
-      // await model.commit();
+      await model.commit();
       return this.success(values);
     } catch (e) {
       await model.rollback();
