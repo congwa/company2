@@ -21,19 +21,19 @@
       </view> -->
     </view>
   </view>
-  <!-- <view class="section-nav section-attr" bindtap="switchAttrPop">
+  <view class="section-nav section-attr" bindtap="switchAttrPop">
     <view class="t">请选择规格数量</view>
     <image class="i" src="../../static/images/address_right.png" background-size="cover"></image>
-  </view> -->
-  <!--<view class="section-nav section-act">
+  </view>
+  <!-- <view class="section-nav section-act">
       <view class="t">
         <view class="label">1个促销:</view>
         <view class="tag">万圣趴</view>
         <view class="text">全场满499，额外送糖果</view>
       </view>
       <image class="i" src="../../static/images/address_right.png" background-size="cover"></image>
-    </view>-->
-  <!-- <view class="comments" wx:if="{{comment.count > 0}}">
+    </view> -->
+  <view class="comments" wx:if="{{comment.count > 0}}">
     <view class="h">
       <navigator url="../comment/comment?valueId={{goods.id}}&typeId=0">
         <text class="t">评价({{comment.count > 999 ? '999+' : comment.count}})</text>
@@ -58,7 +58,7 @@
         <view class="spec">白色 2件</view>
       </view>
     </view>
-  </view> -->
+  </view>
   <video wx:if="{{goods.desc_video_url}}"  id="myVideo" src="{{goods.desc_video_url}}" style='width:100%' object-fit='fill' autoplay enable-danmu danmu-btn controls></video>
   <view class="goods-attr">
   
@@ -145,7 +145,7 @@
     </view>
   </view>
 </view>
-<!-- <view class="bottom-btn">
+<view class="bottom-btn">
   <view class="l l-collect" bindtap="addCannelCollect">
     <image class="icon" src="{{ collectBackImage }}"></image>
   </view>
@@ -157,4 +157,4 @@
   </view>
   <view bindtap="openCartPage" class="c">立即购买</view>
   <view class="r" bindtap="addToCart">加入购物车</view>
-</view> -->
+</view>

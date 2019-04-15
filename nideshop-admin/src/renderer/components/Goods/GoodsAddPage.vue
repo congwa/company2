@@ -35,6 +35,10 @@
             <el-input v-model="infoForm.retail_price" min="0" max="1000000" step="0.01" type="number"></el-input>
           </el-form-item>
 
+          <el-form-item label="商品库存" prop="goods_number">
+            <el-input v-model="infoForm.goods_number" min="0" max="1000000" step="1" type="number"></el-input>
+          </el-form-item>
+
           <el-form-item label="商品关键词(用于搜寻用)" prop="keywords">
             <el-input v-model="infoForm.keywords"></el-input>
           </el-form-item>
@@ -193,6 +197,7 @@
           goods_brief: '',   // 商品简介
 
           goods_desc: '',  // 商品详情
+          goods_number:0, //商品库存
 
           primary_pic_url: '',  // 商品主图 1个
           list_pic_url: '',   // 商品列表图 1个

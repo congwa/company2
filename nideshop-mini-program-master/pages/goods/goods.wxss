@@ -14,7 +14,7 @@
 
 .service-policy {
   width: 750rpx;
-  height: 73rpx;
+  /* height: 73rpx; */
   background: #f4f4f4;
   padding: 0 31.25rpx;
   display: flex;
@@ -56,14 +56,14 @@
 }
 
 .goods-info .name {
-  height: 41rpx;
+  /* height: 41rpx; */
   margin-bottom: 5.208rpx;
   font-size: 41rpx;
   line-height: 41rpx;
 }
 
 .goods-info .desc {
-  height: 43rpx;
+  /* height: 43rpx; */
   margin-bottom: 41rpx;
   font-size: 24rpx;
   line-height: 36rpx;

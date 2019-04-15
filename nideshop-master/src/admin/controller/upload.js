@@ -151,7 +151,7 @@ module.exports = class extends Base {
 
     const MD5Serivce = this.service('MD5', 'admin');
     const strMd5 = await MD5Serivce.readFileMd5(file.path);
-  console.log(strMd5);
+    // console.log(strMd5);
     const data = await this.model('md5_url').where({md5: strMd5}).find();
     if(!think.isEmpty(data)) {
       return that.success({
