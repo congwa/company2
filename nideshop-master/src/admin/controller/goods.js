@@ -30,7 +30,7 @@ module.exports = class extends Base {
     }
 
     const values = this.post();
-    const id = this.post('id');
+    var id = this.post('id');
     const model = this.model('goods');
     const galleryModel = this.model('goods_gallery').db(model.db());
     const attributeModel = this.model('goods_attribute').db(model.db());
@@ -41,15 +41,14 @@ module.exports = class extends Base {
       values.is_new = values.is_new ? 1 : 0;
       values.is_hot = values.is_hot ? 1 : 0;
       values.is_delete = values.is_delete ? 1 : 0;  // 0代表上架  1代表下架
-      var v;
+
       if (id > 0) {
         await model.where({id: id}).update(values);
       } else {
         delete values.id;
-        v = await model.add(values);
-        id = v;
+        id = await model.add(values);
       }
-
+      console.log('id为',id);
       const product_db = this.model('product').db(model.db());
       //更新 product表
       let p_values = {
@@ -112,6 +111,9 @@ module.exports = class extends Base {
 
   async infogoodsAction() {
     const id = this.post('id') || this.get('id');
+    if(!id){
+      return this.fail(400,'id格式错误:'+id);
+    }
 
     const model = this.model('goods_attribute');
     const data = await model.field('attribute_id,value,attribute_category_id').where({goods_id: id}).join('nideshop_attribute ON nideshop_attribute.id=nideshop_goods_attribute.attribute_id').select();

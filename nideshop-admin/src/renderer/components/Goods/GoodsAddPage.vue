@@ -287,7 +287,6 @@
       },
 
       attributeSelect(value,index) {
-        console.log(value,index);
         if(index == undefined || value === ''){
           console.log('fail');
           return;
@@ -513,7 +512,7 @@
           resInfo.is_show = resInfo.is_show ? true : false;
           resInfo.is_delete = resInfo.is_delete? true : false;
           resInfo.retail_price = resInfo.retail_price.toString();
-          that.infoForm = resInfo;
+          that.infoForm = Object.assign(this.infoForm,resInfo);
         })
       },
       getCatalog(){
@@ -540,9 +539,11 @@
         let that = this;
         this.axios.post('goods/infogoods',{id:this.infoForm.id}).then((response) => {
           console.log('商品属性',response);
+          if(response.data.errno != 0 || response.data.data.length == 0){
+            console.log('attribute fail');
+            return;
+          }
           let resInfo = response.data.data;
-
-
           let res =[];
           resInfo.map(item => {
             let a = [];
@@ -558,7 +559,6 @@
           let info = [];
           resInfo.map(item => {
             let assign = Object.assign({},item);
-            console.log('22222222222',assign);
             delete assign.attribute_category_id;
             info.push(assign);
           })
