@@ -53,7 +53,9 @@
                     <el-table-column label="操作" width="140">
                         <template scope="scope">
                             <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button size="small" @click="handleRowSpec(scope.$index, scope.row)">规格</el-button>
                             <el-button size="small" type="danger" @click="handleRowDelete(scope.$index, scope.row)">删除</el-button>
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -89,6 +91,9 @@
       },
       handleRowEdit(index, row) {
         this.$router.push({ name: 'goods_add', query: { id: row.id } })
+      },
+      handleRowSpec(index, row) {
+        this.$router.push({name: 'specification_list', query:{id: row.id}});
       },
       handleRowDelete(index, row) {
 

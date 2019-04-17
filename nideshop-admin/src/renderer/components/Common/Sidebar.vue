@@ -22,11 +22,15 @@
                     <i class="fa fa-circle"></i>
                     <span>商品分类</span>
                 </el-menu-item>
+                <el-menu-item index="/dashboard/specification">
+                    <i class="fa fa-circle"></i>
+                    <span>商品规格</span>
+                </el-menu-item>
                  <el-menu-item index="/dashboard/operate/channel">
                     <i class="fa fa-circle"></i>
                     <span>商品首页展示分类</span>
                 </el-menu-item>
-          
+
 
                  <el-submenu index="attribute">
                    <template slot="title">

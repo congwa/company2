@@ -31,13 +31,13 @@
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
 
-          <el-form-item label="零售价格" prop="retail_price">
+          <!-- <el-form-item label="零售价格" prop="retail_price">
             <el-input v-model="infoForm.retail_price" min="0" max="1000000" step="0.01" type="number"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
-          <el-form-item label="商品库存" prop="goods_number">
+          <!-- <el-form-item label="商品库存" prop="goods_number">
             <el-input v-model="infoForm.goods_number" min="0" max="1000000" step="1" type="number"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="商品关键词(用于搜寻用)" prop="keywords">
             <el-input v-model="infoForm.keywords"></el-input>
@@ -190,14 +190,14 @@
         infoForm: {
           id: 0,              // 商品id
           name: "",           // 商品名字
-          retail_price:0,
+          retail_price:99999,
           category_id:'', // 商品分类选项
           keywords: '',   // 商品关键词 用于搜寻
 
           goods_brief: '',   // 商品简介
 
           goods_desc: '',  // 商品详情
-          goods_number:0, //商品库存
+          goods_number:99999, //商品库存
 
           primary_pic_url: '',  // 商品主图 1个
           list_pic_url: '',   // 商品列表图 1个
@@ -229,10 +229,6 @@
         infoRules: {
           name: [
             { required: true, message: '请输入名称', trigger: 'blur' },
-
-          ],
-          retail_price: [
-            { required: true, type:'number' ,type:'string',message: '请输入零售价格', trigger: 'blur' },
 
           ],
 
