@@ -1,6 +1,6 @@
 {
   "extends": "think",
   "rules": {
-    "camelcase": ["error", {"allow": ["aa_bb"]}]
+    "camel": ["error", {"allow": ["aa_bb"]}]
   }
 }

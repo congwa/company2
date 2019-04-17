@@ -30,6 +30,10 @@ module.exports = class extends Base {
     }
 
     const values = this.post();
+    let specificatioin = values['primary_product_id'];
+    if(!specificatioin || specificatioin.length <= 0){
+      this.fail(400, '商品规格错误');
+    }
     var id = this.post('id');
     const model = this.model('goods');
     const galleryModel = this.model('goods_gallery').db(model.db());
@@ -49,22 +53,22 @@ module.exports = class extends Base {
         id = await model.add(values);
       }
       console.log('id为',id);
-      const product_db = this.model('product').db(model.db());
-      //更新 product表
-      let p_values = {
-        goods_id: id,
-        goods_specification_ids: '',
-        goods_sn: '',
-        goods_number: values.goods_number,
-        retail_price: values.retail_price
-      };
-      const gs = await product_db.where({goods_id: p_values.goods_id}).find();
-      if(think.isEmpty(gs)) {
-        console.log('添加');
-        await product_db.add(p_values);
-      }else{
-        await product_db.where({goods_id: p_values.goods_id}).update(p_values);
-      }
+      // const product_db = this.model('product').db(model.db());
+      // //更新 product表
+      // let p_values = {
+      //   goods_id: id,
+      //   goods_specification_ids: '',
+      //   goods_sn: '',
+      //   goods_number: values.goods_number,
+      //   retail_price: values.retail_price
+      // };
+      // const gs = await product_db.where({goods_id: p_values.goods_id}).find();
+      // if(think.isEmpty(gs)) {
+      //   console.log('添加');
+      //   await product_db.add(p_values);
+      // }else{
+      //   await product_db.where({goods_id: p_values.goods_id}).update(p_values);
+      // }
       console.log('product更新成功');
 
       // 添加goods_gallery
@@ -80,7 +84,7 @@ module.exports = class extends Base {
       }
 
 
-      //添加商品属性
+      // 添加商品属性
       const goods_attribute = values['attribute'];
 
       if(goods_attribute && goods_attribute.length > 0) {
@@ -96,7 +100,7 @@ module.exports = class extends Base {
       return this.success(values);
     } catch (e) {
       await model.rollback();
-      return this.fail(1002,e);
+      return this.fail(400,e);
     }
   }
 
@@ -109,10 +113,12 @@ module.exports = class extends Base {
     return this.success();
   }
 
+
+
   async infogoodsAction() {
     const id = this.post('id') || this.get('id');
-    if(!id){
-      return this.fail(400,'id格式错误:'+id);
+    if (!id) {
+      return this.fail(400, 'id格式错误:' + id);
     }
 
     const model = this.model('goods_attribute');

@@ -137,6 +137,26 @@ export default new Router({
                     component: require('@/components/Attribute/Category/Attribute_CategoryPage')
                 },
 
+                {
+                    path: 'specification/add',
+                    name: 'specification_add',
+                    component: require('@/components/Specification/SpecificationAddPage')
+                },
+                {
+                    path: 'specification',
+                    name: 'specification',
+                    component: require('@/components/Specification/SpecificationPage')
+                },
+                {
+                  path: 'specification_list',
+                  name: 'specification_list',
+                  component: require('@/components/Specification/SpecList/SpecListPage')
+                },
+                {
+                  path: 'specification_list/add',
+                  name: 'specification_list_add',
+                  component: require('@/components/Specification/SpecList/SpecListAddPage')
+                }
             ]
         },
         {
