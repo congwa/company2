@@ -52,7 +52,7 @@ module.exports = class extends Base {
         delete values.id;
         id = await model.add(values);
       }
-      console.log('id为', id);
+
       // const product_db = this.model('product').db(model.db());
       // //更新 product表
       // let p_values = {
@@ -69,7 +69,6 @@ module.exports = class extends Base {
       // }else{
       //   await product_db.where({goods_id: p_values.goods_id}).update(p_values);
       // }
-      console.log('product更新成功');
 
       // 添加goods_gallery
       const gallery_list = values[`gallery`];

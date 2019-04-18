@@ -14,9 +14,8 @@ module.exports = class extends Base {
     // console.log('categoryList: ',categoryList);
     for (const categoryItem of categoryList) {
       const childCategoryIds = await this.model('category').where({parent_id: categoryItem.id}).getField('id', 100); // 找出这个一级分类对应的子分类
-      console.log('ids', childCategoryIds);
       let categoryGoods;
-      if (childCategoryIds.length == 0) { // 当父分类下面没有子分类的情况
+      if (childCategoryIds.length === 0) { // 当父分类下面没有子分类的情况
         categoryGoods = [];
       } else {
         categoryGoods = await this.model('goods').field(['id', 'name', 'list_pic_url', 'retail_price']).where({category_id: ['IN', childCategoryIds]}).limit(7).select(); // 把这些子分类的详情找出来
