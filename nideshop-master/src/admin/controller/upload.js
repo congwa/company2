@@ -126,7 +126,6 @@ module.exports = class extends Base {
     }
     const that = this;
     const filename = '/static/upload/video/' + think.uuid(32) + '.flv';
-    console.log(filename);
     await fss.ensureDir(think.ROOT_PATH + '/www' + '/static/upload/video'); // 确保目录真的存在
     const is = fs.createReadStream(file.path);
     const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);

@@ -33,7 +33,7 @@ module.exports = class extends Base {
     const model = this.model('category');
     const data = await model.where({is_show: 1}).order(['sort_order ASC']).select();
     const second = data.filter((item) => {
-      return item.parent_id != 0;
+      return item.parent_id !== 0;
     })
     return this.success(second);
   }
