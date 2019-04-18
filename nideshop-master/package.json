@@ -36,7 +36,7 @@
     "think-inspect": "0.0.2",
     "think-babel": "^1.0.3",
     "eslint": "^4.2.0",
-    "eslint-config-think": "^1.0.0"
+    "eslint-config-think": "^1.0.2"
   },
   "repository": "",
   "license": "MIT",

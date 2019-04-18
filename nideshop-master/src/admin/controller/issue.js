@@ -23,9 +23,9 @@ module.exports = class extends think.Controller {
 
     const model = this.model('goods_issue');
 
-    let values = {
-      goods_id:1127052,
-      question:this.post('question'),
+    const values = {
+      goods_id: 1127052,
+      question: this.post('question'),
       answer: this.post('answer')
     };
     if (id > 0) {
@@ -37,14 +37,13 @@ module.exports = class extends think.Controller {
     return this.success(values);
   }
 
-  async infoAction(){
+  async infoAction() {
     const id = this.post('id') || this.get('id');
 
     const model = this.model('goods_issue');
     const data = await model.where({id: id}).find();
     return this.success(data);
   }
-
 
   /**
    * 删除一个banner

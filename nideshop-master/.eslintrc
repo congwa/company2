@@ -1,6 +1,28 @@
+/* global think */
+/* "camelcase": ["error", {"properties": "never"}] */
 {
   "extends": "think",
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "globals": {
+    "think": true
+  },
   "rules": {
-    "camel": ["error", {"allow": ["aa_bb"]}]
+    "camelcase": 0,
+    "no-unused-vars": [2, {
+      // 允许声明未使用变量
+      "vars": "local",
+      // 参数不检查
+      "args": "none"
+    }],
+    "no-var": 0,
+    "semi": [0],
+    "no-mixed-spaces-and-tabs": [0],
+    "no-console": 0,
+    "id-match": 0,
+    "eqeqeq": 0
   }
 }

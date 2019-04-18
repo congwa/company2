@@ -34,15 +34,15 @@ module.exports = class extends think.Controller {
 
     const model = this.model('ad');
 
-    let values = {
-      ad_position_id:1,
-      media_type:1,
-      name:this.post('name'),
-      link:'',
-      image_url:this.post('image_url'),
+    const values = {
+      ad_position_id: 1,
+      media_type: 1,
+      name: this.post('name'),
+      link: '',
+      image_url: this.post('image_url'),
       content: this.post('content'),
       end_time: 0,
-      enabled: this.post('enabled')? 1: 0
+      enabled: this.post('enabled') ? 1 : 0
     };
     if (id > 0) {
       await model.where({id: id}).update(values);
@@ -53,14 +53,13 @@ module.exports = class extends think.Controller {
     return this.success(values);
   }
 
-  async infoAction(){
+  async infoAction() {
     const id = this.post('id') || this.get('id');
 
     const model = this.model('ad');
     const data = await model.where({id: id}).find();
     return this.success(data);
   }
-
 
   /**
    * 删除一个banner

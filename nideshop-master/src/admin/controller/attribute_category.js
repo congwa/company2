@@ -21,9 +21,9 @@ module.exports = class extends think.Controller {
 
     const model = this.model('attribute_category');
 
-    let values = {
-      name:this.post('name'),
-      enabled:this.post('enabled')? 1: 0
+    const values = {
+      name: this.post('name'),
+      enabled: this.post('enabled') ? 1 : 0
     };
     if (id > 0) {
       await model.where({id: id}).update(values);
@@ -34,14 +34,13 @@ module.exports = class extends think.Controller {
     return this.success(values);
   }
 
-  async infoAction(){
+  async infoAction() {
     const id = this.post('id') || this.get('id');
 
     const model = this.model('attribute_category');
     const data = await model.where({id: id}).find();
     return this.success(data);
   }
-
 
   /**
    * 删除一个attribute
