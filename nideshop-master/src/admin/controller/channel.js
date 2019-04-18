@@ -28,8 +28,8 @@ module.exports = class extends think.Controller {
 
     const model = this.model('channel');
 
-    let values = {
-      id:this.post('id'),
+    const values = {
+      id: this.post('id'),
       name: this.post('name'),
       url: '/pages/category/category?id=' + this.post('category_id'),
       icon_url: this.post('icon_url'),
@@ -44,14 +44,13 @@ module.exports = class extends think.Controller {
     return this.success(values);
   }
 
-  async infoAction(){
+  async infoAction() {
     const id = this.post('id') || this.get('id');
 
     const model = this.model('channel');
     const data = await model.where({id: id}).find();
     return this.success(data);
   }
-
 
   /**
    * 删除一个banner

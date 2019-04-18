@@ -30,21 +30,21 @@ module.exports = class extends Base {
     }
 
     const values = this.post();
-    let specificatioin = values['primary_product_id'];
-    if(!specificatioin || specificatioin.length <= 0){
+    const specificatioin = values['primary_product_id'];
+    if (!specificatioin || specificatioin.length <= 0) {
       this.fail(400, '商品规格错误');
     }
     var id = this.post('id');
     const model = this.model('goods');
     const galleryModel = this.model('goods_gallery').db(model.db());
     const attributeModel = this.model('goods_attribute').db(model.db());
-    try{
-      //添加goods表
+    try {
+      // 添加goods表
       await model.startTrans();
       values.is_on_sale = values.is_on_sale ? 1 : 0;
       values.is_new = values.is_new ? 1 : 0;
       values.is_hot = values.is_hot ? 1 : 0;
-      values.is_delete = values.is_delete ? 1 : 0;  // 0代表上架  1代表下架
+      values.is_delete = values.is_delete ? 1 : 0; // 0代表上架  1代表下架
 
       if (id > 0) {
         await model.where({id: id}).update(values);
@@ -52,7 +52,7 @@ module.exports = class extends Base {
         delete values.id;
         id = await model.add(values);
       }
-      console.log('id为',id);
+      console.log('id为', id);
       // const product_db = this.model('product').db(model.db());
       // //更新 product表
       // let p_values = {
@@ -74,46 +74,42 @@ module.exports = class extends Base {
       // 添加goods_gallery
       const gallery_list = values[`gallery`];
 
-      if(gallery_list && gallery_list.length > 0) {
+      if (gallery_list && gallery_list.length > 0) {
         await galleryModel.where({goods_id: id}).delete();
-        const list = gallery_list.map((url, index)=> {
+        const list = gallery_list.map((url, index) => {
           return {img_url: url, goods_id: id, img_desc: '', sort_order: index}
         })
 
         await galleryModel.addMany(list);
       }
 
-
       // 添加商品属性
       const goods_attribute = values['attribute'];
 
-      if(goods_attribute && goods_attribute.length > 0) {
+      if (goods_attribute && goods_attribute.length > 0) {
         await attributeModel.where({goods_id: id}).delete();
         const a_list = goods_attribute.map(item => {
           item.goods_id = id;
           return item;
         })
         await attributeModel.addMany(a_list);
-
       }
       await model.commit();
       return this.success(values);
     } catch (e) {
       await model.rollback();
-      return this.fail(400,e);
+      return this.fail(400, e);
     }
   }
 
   async destoryAction() {
     const id = this.post('id');
-    await this.service('goods','admin').deletePorduct();
+    await this.service('goods', 'admin').deletePorduct();
     await this.model('goods').where({id: id}).limit(1).delete();
     // TODO 删除图片
 
     return this.success();
   }
-
-
 
   async infogoodsAction() {
     const id = this.post('id') || this.get('id');

@@ -25,13 +25,13 @@ module.exports = class extends think.Controller {
     const data = await this.model('attribute').where().select();
     const categoryList = [];
     attribute_category.map((item) => {
-      let obj = {};
+      const obj = {};
       obj.label = item.name;
       obj.value = item.id;
       obj.children = [];
-      data.map( (child) => {
-        if(child.attribute_category_id === item.id) {
-          let ob = {};    
+      data.map((child) => {
+        if (child.attribute_category_id === item.id) {
+          const ob = {};
           ob.value = child.id;
           ob.label = child.name;
           obj.children.push(ob);
@@ -58,12 +58,12 @@ module.exports = class extends think.Controller {
 
     const model = this.model('attribute');
 
-    let values = {
+    const values = {
       attribute_category_id: this.post('attribute_category_id'),
-      name:this.post('name'),
-      input_type:1,
+      name: this.post('name'),
+      input_type: 1,
       values: '',
-      sort_order:0
+      sort_order: 0
     };
     if (id > 0) {
       await model.where({id: id}).update(values);
@@ -74,7 +74,7 @@ module.exports = class extends think.Controller {
     return this.success(values);
   }
 
-  async infoAction(){
+  async infoAction() {
     const id = this.post('id') || this.get('id');
 
     const model = this.model('attribute');
@@ -89,7 +89,6 @@ module.exports = class extends think.Controller {
     const data = await model.field('attribute_id,value').where({goods_id: id}).select();
     return this.success(data);
   }
-
 
   /**
    * 删除一个attribute

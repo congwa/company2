@@ -31,7 +31,7 @@ module.exports = class extends think.Controller {
 
     const values = {
       name: this.post('name'),
-      sort_order: values.sort_order
+      sort_order: this.post('sort_order')
     };
     if (id > 0) {
       await model.where({id: id}).update(values);
@@ -70,9 +70,9 @@ module.exports = class extends think.Controller {
 
     const g_data = await this.model('goods_specification').where({goods_id: goods_ids}).select();
     const s_data = await this.model('product').where({goods_id: goods_ids}).select();
-    let data = [];
+    const data = [];
     g_data.forEach((item, index) => {
-      let obj = {
+      const obj = {
         id: item.id,
         goods_id: item.goods_id,
         specification_id: item.specification_id,
@@ -103,7 +103,7 @@ module.exports = class extends think.Controller {
       await g_model.startTrans();
       const spec_id = await g_model.add(values);
 
-      let s_values = {
+      const s_values = {
         goods_id: id,
         goods_specification_ids: spec_id,
         goods_sn: '',
@@ -113,9 +113,9 @@ module.exports = class extends think.Controller {
       const row = await this.model('product').db(g_model.db()).add(s_values);
       await g_model.commit();
       return this.success(row);
-    }catch (e) {
+    } catch (e) {
       await g_model.rollback();
-      return this.fail('提交失败',e);
+      return this.fail('提交失败', e);
     }
   }
 
@@ -128,15 +128,14 @@ module.exports = class extends think.Controller {
     const g_model = this.model('goods_specification');
     try {
       await g_model.startTrans();
-      const spec_id = await  g_model.where({id:id}).getField('specification_id');
-      const data = await g_model.where({id:id}).delete();
-      const row = await this.model('product').db(g_model.db()).where({goods_specification_ids: spec_id}).delete();
+      const spec_id = await g_model.where({id: id}).getField('specification_id');
+      const data = await g_model.where({id: id}).delete();
+      await this.model('product').db(g_model.db()).where({goods_specification_ids: spec_id}).delete();
       await g_model.commit();
       return this.success(data);
-    }catch (e) {
+    } catch (e) {
       await g_model.rollback();
-      this.fail('删除失败',e);
+      this.fail('删除失败', e);
     }
   }
-
 };
