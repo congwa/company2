@@ -18,6 +18,7 @@ module.exports = class extends think.Service {
       };
 
       let sessionData = await rp(options);
+      console.log('sessionData=====',sessionData);
       sessionData = JSON.parse(sessionData);
       if (!sessionData.openid) {
         return null;
@@ -25,12 +26,14 @@ module.exports = class extends think.Service {
 
       // 验证用户信息完整性
       const sha1 = crypto.createHash('sha1').update(fullUserInfo.rawData.toString() + sessionData.session_key).digest('hex');
+      console.log('sha1====',sha1);
       if (fullUserInfo.signature !== sha1) {
         return null;
       }
 
       // 解析用户数据
       const wechatUserInfo = await this.decryptUserInfoData(sessionData.session_key, fullUserInfo.encryptedData, fullUserInfo.iv);
+      console.log('wechatUserInfo=====',wechatUserInfo);
       if (think.isEmpty(wechatUserInfo)) {
         return null;
       }

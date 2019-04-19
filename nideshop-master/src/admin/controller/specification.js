@@ -129,6 +129,19 @@ module.exports = class extends think.Controller {
         retail_price: this.post('retail_price')
       };
       const row = await this.model('product').db(g_model.db()).add(s_values);
+
+      const count = await this.model('product').db(g_model.db()).where({goods_id: id}).select();
+      var retail_price;
+      if(count.length >1){
+        const min = await this.model('product').db(g_model.db()).where({goods_id: id}).min('retail_price');
+        const max = await this.model('product').db(g_model.db()).where({goods_id: id}).max('retail_price');
+        console.log(min);
+        retail_price = min + '~' + max;
+      }else {
+        retail_price = this.post('retail_price');
+      }
+      console.log(retail_price);
+      await this.model('goods').db(g_model.db()).where({id: id}).update({retail_price: retail_price});
       await g_model.commit();
       return this.success(row);
     } catch (e) {

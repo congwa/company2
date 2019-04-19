@@ -24,7 +24,7 @@
           <el-table-column prop="value" label="规格内容"> </el-table-column>
           <el-table-column prop="pic_url" label="规格显示图片">
             <template scope="scope">
-              <img :src="scope.row.pic_url" alt="规格图片" />
+              <img class="spec-img" :src="scope.row.pic_url" alt="规格图片" />
             </template>
           </el-table-column>
           <el-table-column prop="retail_price" label="此规格价格">
@@ -115,4 +115,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.spec-img {
+  width: 100px;
+  height: 100px;
+}
+</style>
