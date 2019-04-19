@@ -99,7 +99,6 @@ module.exports = class extends think.Controller {
     await this.model('attribute').where({id: id}).limit(1).delete();
 
     // TODO 事务，验证订单是否可删除（只有失效的订单才可以删除）
-
     return this.success();
   }
 };

@@ -8,7 +8,7 @@ module.exports = class extends think.Controller {
    */
 
   /**
-   * 获取规格
+   * 获取规格列表
    * @returns {Promise<void>}
    */
   async indexAction() {
@@ -16,6 +16,24 @@ module.exports = class extends think.Controller {
 
     return this.success(data);
   }
+
+  /**
+   * 获取唯一的分类列表（当用户没有编辑时候返回所有的，用户填写了一个后只能选取这个分类）
+   * @returns {Promise<void>}
+   */
+  async onlyIndexAction() {
+    const id = this.post('id') || this.get('id');
+    const data = await this.model('goods_specification').where({goods_id: id}).find();
+    if (think.isEmpty(data)) {
+      // 内容为空时的处理
+      const list = await this.model('specification').select();
+      return this.success(list);
+    }
+    console.log(data);
+    const t_list = await this.model('specification').where({id: data.specification_id}).find();
+    return this.success([t_list]);
+  }
+
   /**
    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
    `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
