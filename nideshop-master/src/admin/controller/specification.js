@@ -124,7 +124,7 @@ module.exports = class extends think.Controller {
       const s_values = {
         goods_id: id,
         goods_specification_ids: spec_id,
-        goods_sn: '',
+        goods_sn: spec_id+ '_' + id,
         goods_number: this.post('goods_number'),
         retail_price: this.post('retail_price')
       };
