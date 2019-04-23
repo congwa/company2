@@ -248,7 +248,7 @@ Page({
       });
   },
   openCartPage: function () {
-    wx.navigateTo({
+    wx.switchTab({
       url: '/pages/cart/cart',
     });
   },
