@@ -8,6 +8,7 @@ module.exports = class extends Base {
 
     // 解释用户数据
     const userInfo = await this.service('weixin', 'api').login(code, fullUserInfo);
+    console.log('userInfo:--',userInfo);
     if (think.isEmpty(userInfo)) {
       return this.fail('登录失败');
     }
