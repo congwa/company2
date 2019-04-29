@@ -26,7 +26,7 @@ module.exports = class extends Base {
         weixin_openid: userInfo.openId,
         avatar: userInfo.avatarUrl || '',
         gender: userInfo.gender || 1, // 性别 0：未知、1：男、2：女
-        nickname: userInfo.nickName
+        nickname: userInfo.nickName.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
       });
     }
 
