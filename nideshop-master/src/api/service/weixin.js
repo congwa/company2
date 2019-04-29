@@ -4,7 +4,7 @@ const rp = require('request-promise');
 
 module.exports = class extends think.Service {
   async login(code, fullUserInfo) {
-    try {
+    // try {
       // 获取 session
       const options = {
         method: 'GET',
@@ -38,9 +38,9 @@ module.exports = class extends think.Service {
         return null;
       }
       return wechatUserInfo;
-    } catch (e) {
-      return null;
-    }
+    // } catch (e) {
+    //   return null;
+    // }
   }
 
   /**
