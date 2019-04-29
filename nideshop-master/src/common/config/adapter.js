@@ -41,7 +41,7 @@ exports.model = {
  * @type {Object}
  */
 exports.logger = {
-  type: isDev ? 'console' : 'dateFile',
+  type: isDev ? 'dateFile' : 'dateFile',
   console: {
     handle: Console
   },
