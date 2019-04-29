@@ -81,7 +81,7 @@
   width: 365rpx;
   margin-bottom: 6.25rpx;
   padding-bottom: 33.333rpx;
-  height: auto;
+  height: 500rpx;
   overflow: hidden;
   text-align: center;
 }
